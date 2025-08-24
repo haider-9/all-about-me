@@ -1,0 +1,11 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#fef3c7"/>
+  <text x="200" y="140" text-anchor="middle" font-family="Arial" font-size="16" fill="#92400e">Graduation Photo</text>
+  <text x="200" y="160" text-anchor="middle" font-family="Arial" font-size="12" fill="#b45309">Replace with your image</text>
+  <circle cx="200" cy="100" r="30" fill="#fbbf24"/>
+  <rect x="180" y="70" width="40" height="8" fill="#1f2937"/>
+  <polygon points="200,70 190,60 210,60" fill="#1f2937"/>
+  <circle cx="190" cy="95" r="3" fill="#1f2937"/>
+  <circle cx="210" cy="95" r="3" fill="#1f2937"/>
+  <path d="M185 110 Q200 120 215 110" stroke="#1f2937" stroke-width="2" fill="none"/>
+</svg>

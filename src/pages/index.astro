@@ -1,0 +1,291 @@
+---
+import Layout from "../layouts/Layout.astro";
+import SmoothScroll from "../components/SmoothScroll.astro";
+import FloatingDoodles from "../components/FloatingDoodles.astro";
+import AgeCounter from "../components/AgeCounter.astro";
+import MemoryCard from "../components/MemoryCard.astro";
+import MusicToggle from "../components/MusicToggle.astro";
+import AuthModal from "../components/AuthModal.astro";
+import UserMenu from "../components/UserMenu.astro";
+import ParallaxSection from "../components/ParallaxSection.astro";
+import AnimatedText from "../components/AnimatedText.astro";
+import InteractiveTimeline from "../components/InteractiveTimeline.astro";
+
+// Replace with your actual birth date
+const birthDate = "1995-06-15"; // Format: YYYY-MM-DD
+const name = "Your Name"; // Replace with your name
+
+// Sample memories for interactive timeline
+const memories = [
+  {
+    id: "1",
+    title: "First Day of School",
+    date: "September 2001",
+    description:
+      "I was so nervous but excited to start this new adventure. Mom packed my favorite sandwich and I made my first friend during recess.",
+    image: "/placeholder-school.svg",
+    type: "milestone" as const,
+  },
+  {
+    id: "2",
+    title: "Learning to Code",
+    date: "March 2018",
+    description:
+      "Wrote my first 'Hello World' program. Little did I know this would change my entire life path.",
+    type: "memory" as const,
+  },
+  {
+    id: "3",
+    title: "Graduation Day",
+    date: "May 2020",
+    description:
+      "Finally graduated! It was a virtual ceremony due to the pandemic, but the achievement felt just as real.",
+    image: "/placeholder-graduation.svg",
+    type: "achievement" as const,
+  },
+  {
+    id: "4",
+    title: "First Job",
+    date: "August 2020",
+    description:
+      "Started my first professional job as a developer. Imposter syndrome was real, but so was the excitement.",
+    type: "milestone" as const,
+  },
+  {
+    id: "5",
+    title: "Travel Adventure",
+    date: "December 2022",
+    description:
+      "Took my first solo trip abroad. Learned so much about myself and gained confidence I never knew I had.",
+    image: "/placeholder-travel.svg",
+    type: "memory" as const,
+  },
+];
+---
+
+<Layout title="All About Me - Digital Diary">
+  <SmoothScroll />
+  <FloatingDoodles />
+  <MusicToggle />
+  <AuthModal />
+  <UserMenu />
+
+  <main class="relative z-10">
+    <!-- Hero Section -->
+    <ParallaxSection
+      speed={0.3}
+      className="min-h-screen flex items-center justify-center bg-natural-gradient relative overflow-hidden"
+    >
+      <div class="text-center px-4 z-10">
+        <AnimatedText
+          text="All About Me"
+          animation="bounce"
+          className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-blue-700 via-blue-800 to-slate-700 bg-clip-text text-transparent"
+        />
+        <AnimatedText
+          text="Welcome to my interactive digital diary ✨"
+          animation="fade"
+          delay={800}
+          className="text-xl md:text-2xl text-gray-600 mb-8 font-handwriting block"
+        />
+
+        <!-- Auth Buttons for Non-Authenticated Users -->
+        <div
+          id="auth-buttons"
+          class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mb-8"
+        >
+          <button
+            id="signin-btn"
+            class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-3 rounded-full font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-natural hover:shadow-natural-lg"
+          >
+            Sign In
+          </button>
+          <button
+            id="signup-btn"
+            class="border-2 border-blue-600 text-blue-700 px-6 sm:px-8 py-3 rounded-full font-semibold hover:bg-blue-600 hover:text-white transition-all duration-200"
+          >
+            Create Account
+          </button>
+        </div>
+
+        <div class="animate-bounce">
+          <svg
+            class="w-8 h-8 mx-auto text-orange-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Floating Elements -->
+      <div class="absolute inset-0 pointer-events-none">
+        <div
+          class="absolute top-1/4 left-1/4 w-32 h-32 bg-blue-100 rounded-full opacity-20 animate-gentle-float"
+        >
+        </div>
+        <div
+          class="absolute top-3/4 right-1/4 w-24 h-24 bg-slate-100 rounded-full opacity-30 animate-soft-pulse"
+        >
+        </div>
+        <div
+          class="absolute bottom-1/4 left-1/3 w-20 h-20 bg-sky-100 rounded-full opacity-25 animate-gentle-float"
+          style="animation-delay: 2s;"
+        >
+        </div>
+      </div>
+    </ParallaxSection>
+
+    <!-- Age Counter Section -->
+    <section class="py-20 glass">
+      <div class="container mx-auto px-4">
+        <AgeCounter birthDate={birthDate} name={name} />
+      </div>
+    </section>
+
+    <!-- Interactive Timeline Section -->
+    <section class="py-20 bg-warm-gradient">
+      <div class="container mx-auto px-4">
+        <AnimatedText
+          text="My Memory Lane"
+          animation="reveal"
+          className="text-4xl md:text-6xl font-bold text-center mb-16 bg-gradient-to-r from-blue-700 to-slate-700 bg-clip-text text-transparent block"
+        />
+
+        <InteractiveTimeline memories={memories} />
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-gray-800 text-white text-center">
+      <p class="font-handwriting text-xl">
+        Thanks for visiting my digital diary! ✨
+      </p>
+      <p class="text-gray-300 mt-2">
+        Made with 🧡 using Astro, Tailwind CSS, and lots of memories
+      </p>
+    </footer>
+  </main>
+</Layout>
+
+<script>
+  // Declare global functions for TypeScript
+  declare global {
+    interface Window {
+      updateUserInfo: (user: { name: string; email: string }) => void;
+      showAuthModal: () => void;
+    }
+  }
+
+  // Authentication state management
+  class AuthManager {
+    constructor() {
+      this.checkAuthState();
+    }
+
+    checkAuthState() {
+      const token = localStorage.getItem("session");
+      const authButtons = document.getElementById("auth-buttons");
+
+      if (token) {
+        try {
+          const session = JSON.parse(atob(token));
+          if (session.exp > Date.now()) {
+            this.showAuthenticatedState(session);
+            authButtons?.classList.add("hidden");
+            return;
+          }
+        } catch (error) {
+          console.log("Invalid session token");
+        }
+        localStorage.removeItem("session");
+      }
+
+      this.showUnauthenticatedState();
+    }
+
+    showAuthenticatedState(user: { name: string; email: string; id: string }) {
+      // Redirect authenticated users to dashboard
+      window.location.href = "/dashboard";
+    }
+
+    showUnauthenticatedState() {
+      const authButtons = document.getElementById("auth-buttons");
+      authButtons?.classList.remove("hidden");
+    }
+
+    personalizeContent(user: { name: string; email: string }) {
+      // Update age counter with user's name
+      const ageDisplay = document.querySelector(".age-counter h2");
+      if (ageDisplay) {
+        ageDisplay.textContent = `${user.name} is`;
+      }
+
+      // Add welcome message
+      const heroSection = document.querySelector("main section");
+      if (heroSection && !document.getElementById("welcome-message")) {
+        const welcomeMsg = document.createElement("div");
+        welcomeMsg.id = "welcome-message";
+        welcomeMsg.className =
+          "absolute top-4 left-1/2 transform -translate-x-1/2 bg-white/80 backdrop-blur-sm px-6 py-2 rounded-full shadow-lg";
+        welcomeMsg.innerHTML = `<p class="text-purple-700 font-semibold">Welcome back, ${user.name}! 👋</p>`;
+        heroSection.appendChild(welcomeMsg);
+
+        // Animate in
+        setTimeout(() => {
+          welcomeMsg.style.transform = "translate(-50%, 0)";
+          welcomeMsg.style.opacity = "1";
+        }, 500);
+      }
+    }
+  }
+
+  // Initialize auth manager when DOM is loaded
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      new AuthManager();
+      setupAuthButtons();
+    });
+  } else {
+    new AuthManager();
+    setupAuthButtons();
+  }
+
+  // Setup auth button event listeners
+  function setupAuthButtons() {
+    const signinBtn = document.getElementById("signin-btn");
+    const signupBtn = document.getElementById("signup-btn");
+
+    signinBtn?.addEventListener("click", () => {
+      if (typeof window.showAuthModal === "function") {
+        window.showAuthModal();
+      }
+    });
+
+    signupBtn?.addEventListener("click", () => {
+      if (typeof window.showAuthModal === "function") {
+        window.showAuthModal();
+      }
+    });
+  }
+
+  // Add some interactive effects
+  document.addEventListener("mousemove", (e) => {
+    const floatingElements = document.querySelectorAll(
+      ".absolute.pointer-events-none > div",
+    );
+    floatingElements.forEach((element, index) => {
+      const speed = (index + 1) * 0.02;
+      const x = (e.clientX * speed) / 100;
+      const y = (e.clientY * speed) / 100;
+
+      (element as HTMLElement).style.transform = `translate(${x}px, ${y}px)`;
+    });
+  });
+</script>

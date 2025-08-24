@@ -1,0 +1,133 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="Database Migration - All About Me">
+  <main class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
+      <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+        Database Migration
+      </h1>
+      
+      <div class="mb-6">
+        <p class="text-gray-600 text-sm mb-4">
+          This will migrate all existing MongoDB ObjectIds to custom readable IDs.
+          <strong>This should only be run once!</strong>
+        </p>
+        
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+          <p class="text-yellow-800 text-sm">
+            ⚠️ <strong>Warning:</strong> Make sure to backup your database before running this migration.
+          </p>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label for="secret" class="block text-sm font-medium text-gray-700 mb-2">
+            Migration Secret
+          </label>
+          <input 
+            type="password" 
+            id="secret" 
+            placeholder="Enter migration secret"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+
+        <button 
+          id="migrate-btn"
+          class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          Run Migration
+        </button>
+      </div>
+
+      <div id="result" class="mt-6 hidden">
+        <div id="success" class="bg-green-50 border border-green-200 rounded-lg p-4 hidden">
+          <p class="text-green-800 text-sm">
+            ✅ Migration completed successfully!
+          </p>
+        </div>
+        
+        <div id="error" class="bg-red-50 border border-red-200 rounded-lg p-4 hidden">
+          <p class="text-red-800 text-sm" id="error-message">
+            ❌ Migration failed
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-6 text-center">
+        <a href="/dashboard" class="text-blue-600 hover:text-blue-700 text-sm">
+          ← Back to Dashboard
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const migrateBtn = document.getElementById('migrate-btn');
+  const secretInput = document.getElementById('secret');
+  const resultDiv = document.getElementById('result');
+  const successDiv = document.getElementById('success');
+  const errorDiv = document.getElementById('error');
+  const errorMessage = document.getElementById('error-message');
+
+  migrateBtn?.addEventListener('click', async () => {
+    const secret = (secretInput as HTMLInputElement)?.value.trim();
+    
+    if (!secret) {
+      (window as any).toast?.error('Please enter the migration secret');
+      return;
+    }
+
+    // Disable button and show loading
+    if (migrateBtn) {
+      (migrateBtn as HTMLButtonElement).disabled = true;
+      migrateBtn.textContent = 'Running Migration...';
+    }
+    
+    // Hide previous results
+    resultDiv?.classList.add('hidden');
+    successDiv?.classList.add('hidden');
+    errorDiv?.classList.add('hidden');
+
+    const migrationPromise = fetch('/api/migrate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ secret })
+    }).then(async (response) => {
+      const result = await response.json();
+      
+      if (response.ok) {
+        successDiv?.classList.remove('hidden');
+        resultDiv?.classList.remove('hidden');
+        return result;
+      } else {
+        throw new Error(result.error || 'Migration failed');
+      }
+    }).finally(() => {
+      // Re-enable button
+      if (migrateBtn) {
+        (migrateBtn as HTMLButtonElement).disabled = false;
+        migrateBtn.textContent = 'Run Migration';
+      }
+    });
+
+    // Use toast.promise for better UX
+    (window as any).toast?.promise(migrationPromise, {
+      loading: 'Running database migration...',
+      success: 'Migration completed successfully!',
+      error: 'Migration failed. Check the details below.'
+    }).catch((error: Error) => {
+      if (errorMessage) {
+        errorMessage.textContent = `❌ ${error.message}`;
+      }
+      errorDiv?.classList.remove('hidden');
+      resultDiv?.classList.remove('hidden');
+    });
+  });
+</script>

@@ -1,0 +1,255 @@
+---
+// Memory statistics component
+interface Props {
+  userId: string;
+}
+
+const { userId } = Astro.props;
+---
+
+<div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+  <h3 class="text-xl font-bold text-gray-900 mb-6">Memory Statistics</h3>
+  
+  <div id="stats-loading" class="text-center py-8">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
+    <p class="text-gray-600">Loading statistics...</p>
+  </div>
+  
+  <div id="stats-content" class="hidden space-y-6">
+    <!-- Overview Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="text-center p-4 bg-purple-50 rounded-lg">
+        <div class="text-2xl font-bold text-purple-600" id="total-memories">0</div>
+        <div class="text-sm text-gray-600">Total Memories</div>
+      </div>
+      <div class="text-center p-4 bg-pink-50 rounded-lg">
+        <div class="text-2xl font-bold text-pink-600" id="this-month">0</div>
+        <div class="text-sm text-gray-600">This Month</div>
+      </div>
+      <div class="text-center p-4 bg-blue-50 rounded-lg">
+        <div class="text-2xl font-bold text-blue-600" id="this-year">0</div>
+        <div class="text-sm text-gray-600">This Year</div>
+      </div>
+      <div class="text-center p-4 bg-green-50 rounded-lg">
+        <div class="text-2xl font-bold text-green-600" id="avg-per-month">0</div>
+        <div class="text-sm text-gray-600">Avg/Month</div>
+      </div>
+    </div>
+    
+    <!-- Memory Types Chart -->
+    <div>
+      <h4 class="font-semibold text-gray-700 mb-3">Memory Types</h4>
+      <div class="space-y-2" id="type-chart">
+        <!-- Type bars will be inserted here -->
+      </div>
+    </div>
+    
+    <!-- Popular Tags -->
+    <div>
+      <h4 class="font-semibold text-gray-700 mb-3">Popular Tags</h4>
+      <div class="flex flex-wrap gap-2" id="popular-tags">
+        <!-- Tags will be inserted here -->
+      </div>
+    </div>
+    
+    <!-- Memory Timeline -->
+    <div>
+      <h4 class="font-semibold text-gray-700 mb-3">Activity Timeline</h4>
+      <div class="h-32 bg-gray-50 rounded-lg flex items-end justify-between p-4" id="activity-chart">
+        <!-- Activity bars will be inserted here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ userId }}>
+  class MemoryStatsManager {
+    constructor(userId) {
+      this.userId = userId;
+      this.loadStats();
+    }
+    
+    async loadStats() {
+      try {
+        const response = await fetch(`/api/memories?userId=${this.userId}&limit=1000`);
+        if (!response.ok) throw new Error('Failed to load memories');
+        
+        const data = await response.json();
+        const memories = data.memories || [];
+        
+        this.calculateAndDisplayStats(memories);
+        this.showContent();
+      } catch (error) {
+        console.error('Error loading stats:', error);
+        this.showError();
+      }
+    }
+    
+    calculateAndDisplayStats(memories) {
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+      
+      // Basic counts
+      const total = memories.length;
+      const thisMonth = memories.filter(m => {
+        const date = new Date(m.date);
+        return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
+      }).length;
+      
+      const thisYear = memories.filter(m => {
+        const date = new Date(m.date);
+        return date.getFullYear() === currentYear;
+      }).length;
+      
+      // Calculate average per month
+      const oldestMemory = memories.reduce((oldest, current) => {
+        return new Date(current.date) < new Date(oldest.date) ? current : oldest;
+      }, memories[0]);
+      
+      let avgPerMonth = 0;
+      if (oldestMemory) {
+        const monthsDiff = this.getMonthsDifference(new Date(oldestMemory.date), now);
+        avgPerMonth = monthsDiff > 0 ? Math.round(total / monthsDiff) : total;
+      }
+      
+      // Update display
+      document.getElementById('total-memories').textContent = total;
+      document.getElementById('this-month').textContent = thisMonth;
+      document.getElementById('this-year').textContent = thisYear;
+      document.getElementById('avg-per-month').textContent = avgPerMonth;
+      
+      // Memory types
+      this.displayTypeChart(memories);
+      
+      // Popular tags
+      this.displayPopularTags(memories);
+      
+      // Activity timeline
+      this.displayActivityChart(memories);
+    }
+    
+    displayTypeChart(memories) {
+      const types = memories.reduce((acc, memory) => {
+        acc[memory.type] = (acc[memory.type] || 0) + 1;
+        return acc;
+      }, {});
+      
+      const total = memories.length;
+      const typeChart = document.getElementById('type-chart');
+      
+      const typeColors = {
+        memory: 'bg-blue-500',
+        milestone: 'bg-green-500',
+        achievement: 'bg-yellow-500'
+      };
+      
+      typeChart.innerHTML = Object.entries(types).map(([type, count]) => {
+        const percentage = total > 0 ? (count / total * 100) : 0;
+        return `
+          <div class="flex items-center justify-between">
+            <span class="text-sm capitalize text-gray-600">${type}</span>
+            <div class="flex items-center space-x-2 flex-1 ml-4">
+              <div class="flex-1 bg-gray-200 rounded-full h-2">
+                <div class="${typeColors[type]} h-2 rounded-full" style="width: ${percentage}%"></div>
+              </div>
+              <span class="text-sm text-gray-600 w-12 text-right">${count}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    displayPopularTags(memories) {
+      const tagCounts = memories.reduce((acc, memory) => {
+        memory.tags.forEach(tag => {
+          acc[tag] = (acc[tag] || 0) + 1;
+        });
+        return acc;
+      }, {});
+      
+      const sortedTags = Object.entries(tagCounts)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, 10);
+      
+      const popularTags = document.getElementById('popular-tags');
+      
+      if (sortedTags.length === 0) {
+        popularTags.innerHTML = '<span class="text-gray-500 text-sm">No tags yet</span>';
+        return;
+      }
+      
+      popularTags.innerHTML = sortedTags.map(([tag, count]) => `
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-purple-100 text-purple-700">
+          ${tag} <span class="ml-1 text-xs">(${count})</span>
+        </span>
+      `).join('');
+    }
+    
+    displayActivityChart(memories) {
+      const last12Months = [];
+      const now = new Date();
+      
+      for (let i = 11; i >= 0; i--) {
+        const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        last12Months.push({
+          month: date.getMonth(),
+          year: date.getFullYear(),
+          label: date.toLocaleDateString('en-US', { month: 'short' }),
+          count: 0
+        });
+      }
+      
+      // Count memories per month
+      memories.forEach(memory => {
+        const date = new Date(memory.date);
+        const monthData = last12Months.find(m => 
+          m.month === date.getMonth() && m.year === date.getFullYear()
+        );
+        if (monthData) {
+          monthData.count++;
+        }
+      });
+      
+      const maxCount = Math.max(...last12Months.map(m => m.count), 1);
+      const activityChart = document.getElementById('activity-chart');
+      
+      activityChart.innerHTML = last12Months.map(month => {
+        const height = (month.count / maxCount) * 100;
+        return `
+          <div class="flex flex-col items-center space-y-1">
+            <div class="bg-purple-500 rounded-t" style="width: 16px; height: ${height}%; min-height: 4px;" title="${month.label}: ${month.count} memories"></div>
+            <span class="text-xs text-gray-500 transform -rotate-45 origin-center">${month.label}</span>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    getMonthsDifference(date1, date2) {
+      return (date2.getFullYear() - date1.getFullYear()) * 12 + (date2.getMonth() - date1.getMonth()) + 1;
+    }
+    
+    showContent() {
+      document.getElementById('stats-loading').classList.add('hidden');
+      document.getElementById('stats-content').classList.remove('hidden');
+    }
+    
+    showError() {
+      document.getElementById('stats-loading').innerHTML = `
+        <div class="text-center py-8">
+          <svg class="w-12 h-12 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <p class="text-gray-600">Failed to load statistics</p>
+        </div>
+      `;
+    }
+  }
+  
+  // Initialize when DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => new MemoryStatsManager(userId));
+  } else {
+    new MemoryStatsManager(userId);
+  }
+</script>

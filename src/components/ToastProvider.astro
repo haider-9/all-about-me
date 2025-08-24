@@ -1,0 +1,145 @@
+---
+// Toast provider for notifications
+---
+
+<div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+<script>
+  class ToastManager {
+    private container: HTMLElement;
+    private toastId = 0;
+
+    constructor() {
+      this.container = document.getElementById('toast-container')!;
+    }
+
+    private createToast(message: string, type: 'success' | 'error' | 'loading' | 'info' = 'info'): string {
+      const id = `toast-${++this.toastId}`;
+      
+      const icons = {
+        success: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`,
+        error: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`,
+        loading: `<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`,
+        info: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`
+      };
+
+      const colors = {
+        success: 'bg-green-50 border-green-200 text-green-800',
+        error: 'bg-red-50 border-red-200 text-red-800',
+        loading: 'bg-yellow-50 border-yellow-200 text-yellow-800',
+        info: 'bg-blue-50 border-blue-200 text-blue-800'
+      };
+
+      const iconColors = {
+        success: 'text-green-500',
+        error: 'text-red-500',
+        loading: 'text-yellow-500',
+        info: 'text-blue-500'
+      };
+
+      const toast = document.createElement('div');
+      toast.id = id;
+      toast.className = `toast-item flex items-center p-4 rounded-xl border shadow-natural ${colors[type]} transform translate-x-full opacity-0 transition-all duration-300 max-w-sm`;
+      
+      toast.innerHTML = `
+        <div class="flex-shrink-0 ${iconColors[type]}">
+          ${icons[type]}
+        </div>
+        <div class="ml-3 flex-1">
+          <p class="text-sm font-medium">${message}</p>
+        </div>
+        <button class="ml-4 flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors" onclick="window.toast.dismiss('${id}')">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      `;
+
+      this.container.appendChild(toast);
+
+      // Animate in
+      setTimeout(() => {
+        toast.classList.remove('translate-x-full', 'opacity-0');
+      }, 10);
+
+      // Auto dismiss (except loading toasts)
+      if (type !== 'loading') {
+        setTimeout(() => {
+          this.dismiss(id);
+        }, 4000);
+      }
+
+      return id;
+    }
+
+    success(message: string): string {
+      return this.createToast(message, 'success');
+    }
+
+    error(message: string): string {
+      return this.createToast(message, 'error');
+    }
+
+    loading(message: string): string {
+      return this.createToast(message, 'loading');
+    }
+
+    info(message: string): string {
+      return this.createToast(message, 'info');
+    }
+
+    dismiss(id: string): void {
+      const toast = document.getElementById(id);
+      if (toast) {
+        toast.classList.add('translate-x-full', 'opacity-0');
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      }
+    }
+
+    promise<T>(
+      promise: Promise<T>,
+      messages: { loading: string; success: string; error: string }
+    ): Promise<T> {
+      const loadingId = this.loading(messages.loading);
+      
+      return promise
+        .then((result) => {
+          this.dismiss(loadingId);
+          this.success(messages.success);
+          return result;
+        })
+        .catch((error) => {
+          this.dismiss(loadingId);
+          this.error(messages.error);
+          throw error;
+        });
+    }
+  }
+
+  // Initialize toast manager
+  const toastManager = new ToastManager();
+  
+  // Expose globally
+  (window as any).toast = toastManager;
+</script>
+
+<style>
+  .toast-item {
+    min-width: 300px;
+  }
+  
+  @media (max-width: 640px) {
+    .toast-item {
+      min-width: 280px;
+      max-width: calc(100vw - 2rem);
+    }
+    
+    #toast-container {
+      right: 1rem;
+      left: 1rem;
+      top: 1rem;
+    }
+  }
+</style>

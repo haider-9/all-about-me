@@ -1,0 +1,136 @@
+---
+// Animated text component with typewriter and reveal effects
+interface Props {
+  text: string;
+  animation?: 'typewriter' | 'reveal' | 'bounce' | 'fade';
+  delay?: number;
+  className?: string;
+}
+
+const { text, animation = 'typewriter', delay = 0, className = '' } = Astro.props;
+---
+
+<div 
+  class={`animated-text ${animation} ${className}`}
+  data-text={text}
+  data-delay={delay}
+>
+  {animation === 'typewriter' ? (
+    <span class="typewriter-text"></span>
+  ) : (
+    <span class="reveal-text">{text}</span>
+  )}
+  {animation === 'typewriter' && <span class="cursor">|</span>}
+</div>
+
+<style>
+  .animated-text {
+    display: inline-block;
+  }
+  
+  .typewriter .cursor {
+    animation: blink 1s infinite;
+    color: currentColor;
+  }
+  
+  .reveal .reveal-text {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .reveal.animate .reveal-text {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .bounce .reveal-text {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+  
+  .bounce.animate .reveal-text {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  .fade .reveal-text {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+  
+  .fade.animate .reveal-text {
+    opacity: 1;
+  }
+  
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+</style>
+
+<script>
+  class AnimatedTextController {
+    private elements: NodeListOf<HTMLElement>;
+    
+    constructor() {
+      this.elements = document.querySelectorAll('.animated-text');
+      this.init();
+    }
+    
+    init() {
+      this.elements.forEach(element => {
+        const animation = element.classList.contains('typewriter') ? 'typewriter' : 'reveal';
+        const delay = parseInt(element.dataset.delay || '0');
+        
+        if (animation === 'typewriter') {
+          setTimeout(() => this.typeWriter(element), delay);
+        } else {
+          this.setupIntersectionObserver(element, delay);
+        }
+      });
+    }
+    
+    typeWriter(element: HTMLElement) {
+      const text = element.dataset.text || '';
+      const textElement = element.querySelector('.typewriter-text');
+      if (!textElement) return;
+      
+      let i = 0;
+      const speed = 100;
+      
+      function type() {
+        if (i < text.length) {
+          textElement.textContent += text.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        }
+      }
+      
+      type();
+    }
+    
+    setupIntersectionObserver(element: HTMLElement, delay: number) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              element.classList.add('animate');
+            }, delay);
+            observer.unobserve(element);
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      observer.observe(element);
+    }
+  }
+  
+  // Initialize when DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => new AnimatedTextController());
+  } else {
+    new AnimatedTextController();
+  }
+</script>

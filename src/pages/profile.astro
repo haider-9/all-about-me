@@ -1,0 +1,563 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+---
+
+<Layout title="Profile - All About Me">
+  <Navbar />
+  
+  <main class="pt-20 min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+    <div class="container mx-auto px-4 py-12">
+      <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12">
+          <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+            My Profile
+          </h1>
+          <p class="text-gray-600 text-lg">
+            Manage your account and preferences
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Profile Card -->
+          <div class="lg:col-span-1">
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+              <!-- Avatar -->
+              <div class="text-center mb-6">
+                <div class="w-24 h-24 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold text-3xl mx-auto mb-4">
+                  <span id="profile-avatar">?</span>
+                </div>
+                <h2 id="profile-name" class="text-xl font-bold text-gray-900 mb-1">Loading...</h2>
+                <p id="profile-email" class="text-gray-600">Loading...</p>
+                <p id="profile-joined" class="text-sm text-gray-500 mt-2">Member since...</p>
+              </div>
+
+              <!-- Quick Stats -->
+              <div class="space-y-4">
+                <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                  <span class="text-gray-600">Total Memories</span>
+                  <span id="total-memories" class="font-semibold text-purple-600">0</span>
+                </div>
+                <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                  <span class="text-gray-600">This Month</span>
+                  <span id="month-memories" class="font-semibold text-purple-600">0</span>
+                </div>
+                <div class="flex justify-between items-center py-2">
+                  <span class="text-gray-600">Favorite Type</span>
+                  <span id="favorite-type" class="font-semibold text-purple-600">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Content -->
+          <div class="lg:col-span-2 space-y-8">
+            <!-- Account Settings -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-6">Account Settings</h3>
+              
+              <form id="profile-form" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label for="birth-date" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Birth Date
+                  </label>
+                  <input
+                    type="date"
+                    id="birth-date"
+                    name="birthDate"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50"
+                  />
+                </div>
+
+                <div class="flex justify-end">
+                  <button
+                    type="submit"
+                    class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transform hover:scale-105 transition-all duration-200"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Change Password -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-6">Change Password</h3>
+              
+              <form id="password-form" class="space-y-6">
+                <div>
+                  <label for="current-password" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Current Password
+                  </label>
+                  <input
+                    type="password"
+                    id="current-password"
+                    name="currentPassword"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50"
+                  />
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label for="new-password" class="block text-sm font-semibold text-gray-700 mb-2">
+                      New Password
+                    </label>
+                    <input
+                      type="password"
+                      id="new-password"
+                      name="newPassword"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label for="confirm-password" class="block text-sm font-semibold text-gray-700 mb-2">
+                      Confirm Password
+                    </label>
+                    <input
+                      type="password"
+                      id="confirm-password"
+                      name="confirmPassword"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/50"
+                    />
+                  </div>
+                </div>
+
+                <div class="flex justify-end">
+                  <button
+                    type="submit"
+                    class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transform hover:scale-105 transition-all duration-200"
+                  >
+                    Update Password
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Privacy Settings -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-6">Privacy & Data</h3>
+              
+              <div class="space-y-6">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h4 class="font-semibold text-gray-900">Export Data</h4>
+                    <p class="text-sm text-gray-600">Download all your memories and data</p>
+                  </div>
+                  <button
+                    id="export-data-btn"
+                    class="px-4 py-2 border border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition-colors"
+                  >
+                    Export
+                  </button>
+                </div>
+                
+                <div class="border-t border-gray-200 pt-6">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <h4 class="font-semibold text-red-600">Delete Account</h4>
+                      <p class="text-sm text-gray-600">Permanently delete your account and all data</p>
+                    </div>
+                    <button
+                      id="delete-account-btn"
+                      class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div id="message-container" class="fixed bottom-4 right-4 z-50 hidden">
+      <div id="success-message" class="hidden bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg shadow-lg">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          <span id="success-text">Changes saved successfully!</span>
+        </div>
+      </div>
+      <div id="error-message" class="hidden bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg shadow-lg">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+          </svg>
+          <span id="error-text">An error occurred. Please try again.</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  interface UserProfile {
+    id: string;
+    name: string;
+    email: string;
+    birthDate?: string;
+    createdAt: string;
+  }
+
+  interface MemoryStats {
+    total: number;
+    thisMonth: number;
+    favoriteType: string;
+  }
+
+  class ProfileManager {
+    private currentUser: UserProfile | null = null;
+
+    constructor() {
+      this.checkAuthentication();
+      this.setupEventListeners();
+      this.loadProfile();
+    }
+
+    checkAuthentication() {
+      const token = localStorage.getItem('session');
+      if (!token) {
+        window.location.href = '/';
+        return;
+      }
+
+      try {
+        const session = JSON.parse(atob(token));
+        if (session.exp <= Date.now()) {
+          localStorage.removeItem('session');
+          window.location.href = '/';
+        }
+      } catch (error) {
+        localStorage.removeItem('session');
+        window.location.href = '/';
+      }
+    }
+
+    setupEventListeners() {
+      // Profile form
+      const profileForm = document.getElementById('profile-form') as HTMLFormElement;
+      profileForm?.addEventListener('submit', (e) => this.handleProfileUpdate(e));
+
+      // Password form
+      const passwordForm = document.getElementById('password-form') as HTMLFormElement;
+      passwordForm?.addEventListener('submit', (e) => this.handlePasswordChange(e));
+
+      // Export data
+      const exportBtn = document.getElementById('export-data-btn');
+      exportBtn?.addEventListener('click', () => this.exportData());
+
+      // Delete account
+      const deleteBtn = document.getElementById('delete-account-btn');
+      deleteBtn?.addEventListener('click', () => this.deleteAccount());
+    }
+
+    async loadProfile() {
+      try {
+        const token = localStorage.getItem('session');
+        if (!token) return;
+        
+        const session = JSON.parse(atob(token));
+        
+        // For now, use session data as profile data
+        // In a real app, you'd fetch from an API
+        this.currentUser = {
+          id: session.id,
+          name: session.name,
+          email: session.email,
+          createdAt: session.createdAt || new Date().toISOString()
+        };
+
+        this.updateProfileDisplay();
+        this.loadMemoryStats();
+      } catch (error) {
+        console.error('Error loading profile:', error);
+      }
+    }
+
+    updateProfileDisplay() {
+      if (!this.currentUser) return;
+
+      // Update profile card
+      const avatar = document.getElementById('profile-avatar');
+      const name = document.getElementById('profile-name');
+      const email = document.getElementById('profile-email');
+      const joined = document.getElementById('profile-joined');
+
+      if (avatar) avatar.textContent = this.currentUser.name.charAt(0).toUpperCase();
+      if (name) name.textContent = this.currentUser.name;
+      if (email) email.textContent = this.currentUser.email;
+      if (joined) {
+        const joinDate = new Date(this.currentUser.createdAt).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long'
+        });
+        joined.textContent = `Member since ${joinDate}`;
+      }
+
+      // Update form fields
+      const nameInput = document.getElementById('name') as HTMLInputElement;
+      const emailInput = document.getElementById('email') as HTMLInputElement;
+      const birthDateInput = document.getElementById('birth-date') as HTMLInputElement;
+
+      if (nameInput) nameInput.value = this.currentUser.name;
+      if (emailInput) emailInput.value = this.currentUser.email;
+      if (birthDateInput && this.currentUser.birthDate) {
+        birthDateInput.value = this.currentUser.birthDate;
+      }
+    }
+
+    async loadMemoryStats() {
+      try {
+        const token = localStorage.getItem('session');
+        if (!token) return;
+        
+        const session = JSON.parse(atob(token));
+        const response = await fetch(`/api/memories?userId=${session.id}`);
+        
+        if (response.ok) {
+          const memories = await response.json();
+          const stats = this.calculateStats(memories);
+          this.updateStatsDisplay(stats);
+        }
+      } catch (error) {
+        console.error('Error loading memory stats:', error);
+      }
+    }
+
+    calculateStats(memories: any[]): MemoryStats {
+      const total = memories.length;
+      
+      // Calculate this month's memories
+      const currentMonth = new Date().getMonth();
+      const currentYear = new Date().getFullYear();
+      const thisMonth = memories.filter(memory => {
+        const memoryDate = new Date(memory.date);
+        return memoryDate.getMonth() === currentMonth && memoryDate.getFullYear() === currentYear;
+      }).length;
+
+      // Calculate favorite type
+      const typeCounts = memories.reduce((acc, memory) => {
+        acc[memory.type] = (acc[memory.type] || 0) + 1;
+        return acc;
+      }, {});
+
+      const favoriteType = Object.keys(typeCounts).reduce((a, b) => 
+        typeCounts[a] > typeCounts[b] ? a : b, 'memory'
+      );
+
+      return { total, thisMonth, favoriteType };
+    }
+
+    updateStatsDisplay(stats: MemoryStats) {
+      const totalElement = document.getElementById('total-memories');
+      const monthElement = document.getElementById('month-memories');
+      const typeElement = document.getElementById('favorite-type');
+
+      if (totalElement) totalElement.textContent = stats.total.toString();
+      if (monthElement) monthElement.textContent = stats.thisMonth.toString();
+      if (typeElement) typeElement.textContent = stats.favoriteType || '-';
+    }
+
+    async handleProfileUpdate(e: Event) {
+      e.preventDefault();
+      
+      const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
+      
+      try {
+        // In a real app, you'd send this to an API
+        // For now, just update local session
+        const token = localStorage.getItem('session');
+        if (token) {
+          const session = JSON.parse(atob(token));
+          session.name = formData.get('name') as string;
+          session.email = formData.get('email') as string;
+          
+          const updatedToken = btoa(JSON.stringify(session));
+          localStorage.setItem('session', updatedToken);
+          
+          this.currentUser = {
+            ...this.currentUser!,
+            name: session.name,
+            email: session.email,
+            birthDate: formData.get('birthDate') as string || undefined
+          };
+          
+          this.updateProfileDisplay();
+          this.showSuccess('Profile updated successfully!');
+          
+          // Update navbar
+          if (typeof (window as any).updateNavbarUserInfo === 'function') {
+            (window as any).updateNavbarUserInfo({ name: session.name, email: session.email });
+          }
+        }
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        this.showError('Failed to update profile. Please try again.');
+      }
+    }
+
+    async handlePasswordChange(e: Event) {
+      e.preventDefault();
+      
+      const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
+      
+      const currentPassword = formData.get('currentPassword') as string;
+      const newPassword = formData.get('newPassword') as string;
+      const confirmPassword = formData.get('confirmPassword') as string;
+
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        this.showError('Please fill in all password fields.');
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        this.showError('New passwords do not match.');
+        return;
+      }
+
+      if (newPassword.length < 6) {
+        this.showError('Password must be at least 6 characters long.');
+        return;
+      }
+
+      try {
+        // In a real app, you'd send this to an API
+        this.showSuccess('Password updated successfully!');
+        form.reset();
+      } catch (error) {
+        console.error('Error updating password:', error);
+        this.showError('Failed to update password. Please try again.');
+      }
+    }
+
+    async exportData() {
+      try {
+        const token = localStorage.getItem('session');
+        if (!token) return;
+        
+        const session = JSON.parse(atob(token));
+        const response = await fetch(`/api/memories?userId=${session.id}`);
+        
+        if (response.ok) {
+          const memories = await response.json();
+          const exportData = {
+            profile: this.currentUser,
+            memories: memories,
+            exportDate: new Date().toISOString()
+          };
+          
+          const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+            type: 'application/json'
+          });
+          
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `all-about-me-export-${new Date().toISOString().split('T')[0]}.json`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          
+          this.showSuccess('Data exported successfully!');
+        }
+      } catch (error) {
+        console.error('Error exporting data:', error);
+        this.showError('Failed to export data. Please try again.');
+      }
+    }
+
+    async deleteAccount() {
+      const confirmed = confirm(
+        'Are you sure you want to delete your account? This action cannot be undone and will permanently delete all your memories and data.'
+      );
+      
+      if (!confirmed) return;
+
+      const doubleConfirmed = confirm(
+        'This is your final warning. Deleting your account will permanently remove all your data. Are you absolutely sure?'
+      );
+      
+      if (!doubleConfirmed) return;
+
+      try {
+        // In a real app, you'd send this to an API
+        localStorage.removeItem('session');
+        alert('Account deleted successfully. You will now be redirected to the home page.');
+        window.location.href = '/';
+      } catch (error) {
+        console.error('Error deleting account:', error);
+        this.showError('Failed to delete account. Please try again.');
+      }
+    }
+
+    showSuccess(message: string) {
+      const container = document.getElementById('message-container');
+      const successMsg = document.getElementById('success-message');
+      const errorMsg = document.getElementById('error-message');
+      const successText = document.getElementById('success-text');
+      
+      if (successText) successText.textContent = message;
+      container?.classList.remove('hidden');
+      successMsg?.classList.remove('hidden');
+      errorMsg?.classList.add('hidden');
+      
+      setTimeout(() => {
+        container?.classList.add('hidden');
+      }, 5000);
+    }
+
+    showError(message: string) {
+      const container = document.getElementById('message-container');
+      const successMsg = document.getElementById('success-message');
+      const errorMsg = document.getElementById('error-message');
+      const errorText = document.getElementById('error-text');
+      
+      if (errorText) errorText.textContent = message;
+      container?.classList.remove('hidden');
+      successMsg?.classList.add('hidden');
+      errorMsg?.classList.remove('hidden');
+      
+      setTimeout(() => {
+        container?.classList.add('hidden');
+      }, 5000);
+    }
+  }
+
+  // Initialize profile manager
+  new ProfileManager();
+</script>

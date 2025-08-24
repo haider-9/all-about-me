@@ -1,0 +1,1117 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+---
+
+<Layout title="My Profile - All About Me">
+  <Navbar />
+
+  <!-- Lenis Smooth Scroll -->
+  <script
+    src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1/bundled/lenis.min.js"
+  ></script>
+
+  <!-- Framer Motion -->
+  <script type="module">
+    import {
+      motion,
+      stagger,
+      animate,
+      inView,
+    } from "https://esm.sh/framer-motion@11.0.8";
+    window.motion = motion;
+    window.stagger = stagger;
+    window.animate = animate;
+    window.inView = inView;
+  </script>
+
+  <main class="pt-20 min-h-screen bg-natural-gradient">
+    <!-- Profile Banner Section -->
+    <div
+      id="profile-banner"
+      class="relative h-48 sm:h-56 md:h-64 bg-gradient-to-r from-gray-50 to-gray-100 overflow-hidden border-b border-gray-200"
+    >
+
+
+      <img
+        id="banner-image"
+        class="w-full h-full object-cover hidden"
+        alt="Profile banner"
+      />
+
+
+
+      <!-- Profile Info Overlay -->
+      <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+        <div
+          class="container mx-auto flex flex-col sm:flex-row sm:items-end space-y-6 sm:space-y-0 sm:space-x-8"
+        >
+          <!-- Profile Picture -->
+          <div class="relative flex-shrink-0 self-center sm:self-auto">
+            <div
+              id="profile-pic"
+              class="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full overflow-hidden bg-white flex items-center justify-center border-4 border-white shadow-lg"
+            >
+              <img
+                id="profile-image"
+                class="w-full h-full object-cover hidden"
+                alt="Profile picture"
+              />
+              <div
+                id="profile-placeholder"
+                class="text-gray-400 text-3xl md:text-4xl font-light"
+              >
+                ?
+              </div>
+            </div>
+          </div>
+
+          <!-- User Info -->
+          <div class="text-gray-800 pb-2 text-center sm:text-left flex-1">
+            <h1
+              id="user-name"
+              class="text-2xl sm:text-3xl md:text-4xl font-light mb-2 tracking-wide"
+            >
+              Welcome Back
+            </h1>
+            <p
+              id="user-bio"
+              class="text-base sm:text-lg text-gray-600 font-light hidden mb-2"
+            >
+            </p>
+            <div
+              class="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 mt-2"
+            >
+              <span id="user-location" class="text-sm text-gray-500 hidden"></span>
+              <span id="user-age" class="text-sm text-gray-500 hidden"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Profile Button -->
+      <a
+        href="/edit-profile"
+        class="absolute top-4 right-4 sm:top-6 sm:right-6 bg-white text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-50 transition-all duration-200 flex items-center space-x-2 text-sm border border-gray-200 hover:border-gray-300 shadow-sm"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+          ></path>
+        </svg>
+        <span class="hidden sm:inline">Edit Profile</span>
+        <span class="sm:hidden">Edit</span>
+      </a>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="container mx-auto px-4 py-8">
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 mb-10">
+        <div class="bg-white rounded-xl p-6 text-center shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200">
+          <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+          </div>
+          <div class="text-2xl font-semibold text-gray-900 mb-1" id="memory-count">
+            0
+          </div>
+          <p class="text-gray-600 text-sm">Memories Captured</p>
+        </div>
+
+        <div
+          class="group relative overflow-hidden bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-8 text-center shadow-2xl hover:shadow-emerald-500/25 transition-all duration-500 transform hover:-translate-y-2"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          >
+          </div>
+          <div class="relative z-10">
+            <div
+              class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300"
+            >
+              <svg
+                class="w-8 h-8 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                ></path>
+              </svg>
+            </div>
+            <div class="text-4xl font-bold text-white mb-2" id="days-active">
+              0
+            </div>
+            <p class="text-white/90 font-handwriting text-lg">Days Active</p>
+          </div>
+        </div>
+
+        <div
+          class="group relative overflow-hidden bg-gradient-to-br from-orange-500 to-pink-600 rounded-3xl p-8 text-center shadow-2xl hover:shadow-orange-500/25 transition-all duration-500 transform hover:-translate-y-2"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          >
+          </div>
+          <div class="relative z-10">
+            <div
+              class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300"
+            >
+              <svg
+                class="w-8 h-8 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                ></path>
+              </svg>
+            </div>
+            <div
+              class="text-4xl font-bold text-white mb-2"
+              id="profile-completion"
+            >
+              0%
+            </div>
+            <p class="text-white/90 font-handwriting text-lg">
+              Profile Complete
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search and Filter Bar -->
+      <div class="bg-white rounded-xl p-6 mb-8 shadow-sm border border-gray-100">
+        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+          <!-- Search -->
+          <div class="flex-1">
+            <div class="relative">
+              <svg
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+              <input
+                type="text"
+                id="search-input"
+                placeholder="Search your memories..."
+                class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              />
+            </div>
+          </div>
+
+          <!-- Filter by Type -->
+          <div class="md:w-48">
+            <select
+              id="type-filter"
+              class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            >
+              <option value="">All Types</option>
+              <option value="memory">💭 Memories</option>
+              <option value="milestone">🎯 Milestones</option>
+              <option value="achievement">🏆 Achievements</option>
+            </select>
+          </div>
+
+          <!-- Add Memory Button -->
+          <a
+            href="/add-memory"
+            class="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-all duration-200 text-center flex items-center justify-center"
+          >
+                </div>
+                <svg
+                  class="w-6 h-6 mr-3 group-hover:rotate-90 transition-transform duration-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4v16m8-8H4"></path>
+                </svg>
+                <span class="relative z-10">Add Memory</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div
+        id="loading"
+        class="fixed inset-0 z-50 flex items-center justify-center"
+      >
+        <div class="glass rounded-2xl p-8 text-center shadow-natural-lg">
+          <div class="flex flex-col items-center">
+            <div class="relative">
+              <div
+                class="animate-spin w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full mb-4"
+              >
+              </div>
+              <div
+                class="absolute inset-0 animate-ping w-16 h-16 border-4 border-blue-300 border-t-transparent rounded-full opacity-20"
+              >
+              </div>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">
+              Loading Your Memories
+            </h3>
+            <p class="text-gray-600 font-handwriting text-lg mb-4">
+              Preparing your digital story...
+            </p>
+            <div class="flex space-x-2">
+              <div
+                class="w-3 h-3 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full animate-bounce"
+              >
+              </div>
+              <div
+                class="w-3 h-3 bg-gradient-to-r from-purple-400 to-purple-500 rounded-full animate-bounce"
+                style="animation-delay: 0.1s;"
+              >
+              </div>
+              <div
+                class="w-3 h-3 bg-gradient-to-r from-pink-400 to-pink-500 rounded-full animate-bounce"
+                style="animation-delay: 0.2s;"
+              >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="hidden text-center py-12">
+        <div class="glass rounded-2xl p-12 max-w-lg mx-auto modern-card">
+          <div class="relative mb-6">
+            <div class="text-6xl mb-4 animate-bounce">📝</div>
+            <div class="absolute -top-2 -right-2 text-2xl animate-pulse">
+              ✨
+            </div>
+            <div
+              class="absolute -bottom-2 -left-2 text-2xl animate-pulse"
+              style="animation-delay: 0.5s;"
+            >
+              💫
+            </div>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-800 mb-3">
+            Your Story Awaits
+          </h3>
+          <p
+            class="text-gray-600 mb-6 font-handwriting text-lg leading-relaxed"
+          >
+            Every great story starts with a single moment. Begin capturing your
+            memories and watch your digital portfolio come to life with
+            beautiful animations and collage effects!
+          </p>
+          <div class="space-y-4">
+            <a
+              href="/add-memory"
+              class="block bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200 transform hover:scale-105 shadow-lg"
+            >
+              🚀 Create Your First Memory
+            </a>
+            <p class="text-sm text-gray-500">
+              Add photos, stories, milestones, and achievements
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- All Memories Section -->
+      <div id="memories-section" class="hidden">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-3xl font-bold text-gray-800 flex items-center">
+            <svg
+              class="w-8 h-8 mr-3 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              ></path>
+            </svg>
+            My Memory Collection
+          </h2>
+          <div class="text-sm text-gray-500" id="memory-counter">
+            <!-- Will show count -->
+          </div>
+        </div>
+
+        <!-- Memories Grid with Collage Motion -->
+        <div
+          id="memories-grid"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 relative"
+        >
+          <!-- Memory cards will be inserted here with collage animations -->
+        </div>
+
+        <!-- No Results State -->
+        <div id="no-results" class="hidden text-center py-12">
+          <div class="glass rounded-2xl p-8 max-w-md mx-auto modern-card">
+            <div class="text-4xl mb-4">🔍</div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">
+              No memories found
+            </h3>
+            <p class="text-gray-600 font-handwriting">
+              Try adjusting your search or filter criteria.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div id="fab-container" class="fixed bottom-6 right-6 z-40">
+      <a
+        href="/add-memory"
+        class="fab-button bg-gradient-to-r from-blue-600 to-blue-700 text-white w-16 h-16 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110 group"
+      >
+        <svg
+          class="w-8 h-8 transition-transform group-hover:rotate-90"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 4v16m8-8H4"></path>
+        </svg>
+      </a>
+
+      <!-- Tooltip -->
+      <div
+        class="fab-tooltip absolute bottom-full right-0 mb-2 px-3 py-2 bg-gray-800 text-white text-sm rounded-lg opacity-0 pointer-events-none transition-opacity duration-200 whitespace-nowrap"
+      >
+        Add New Memory
+        <div
+          class="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"
+        >
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  class Dashboard {
+    private memories: any[] = [];
+    private filteredMemories: any[] = [];
+
+    constructor() {
+      this.loadUserProfile();
+      this.loadMemories();
+      this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+      const searchInput = document.getElementById(
+        "search-input",
+      ) as HTMLInputElement;
+      const typeFilter = document.getElementById(
+        "type-filter",
+      ) as HTMLSelectElement;
+
+      searchInput?.addEventListener("input", () => this.filterMemories());
+      typeFilter?.addEventListener("change", () => this.filterMemories());
+    }
+
+    async loadUserProfile() {
+      const token = localStorage.getItem("session");
+      if (!token) {
+        window.location.href = "/";
+        return;
+      }
+
+      try {
+        const session = JSON.parse(atob(token));
+        if (session.exp <= Date.now()) {
+          localStorage.removeItem("session");
+          window.location.href = "/";
+          return;
+        }
+
+        const response = await fetch("/api/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const profile = await response.json();
+          this.displayProfile(profile);
+        }
+      } catch (error) {
+        console.error("Error loading profile:", error);
+      }
+    }
+
+    displayProfile(profile: any) {
+      // Update name
+      const userName = document.getElementById("user-name");
+      if (userName && profile.fullName) {
+        userName.textContent = `Welcome back, ${profile.fullName}!`;
+      }
+
+      // Update bio
+      const userBio = document.getElementById("user-bio");
+      if (userBio && profile.bio) {
+        userBio.textContent = profile.bio;
+        userBio.classList.remove("hidden");
+      }
+
+      // Update location
+      const userLocation = document.getElementById("user-location");
+      if (userLocation && profile.location) {
+        userLocation.innerHTML = `<svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>${profile.location}`;
+        userLocation.classList.remove("hidden");
+      }
+
+      // Calculate and display age
+      if (profile.birthDate) {
+        const age = this.calculateAge(profile.birthDate);
+        const userAge = document.getElementById("user-age");
+        if (userAge) {
+          userAge.innerHTML = `<svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>${age} years old`;
+          userAge.classList.remove("hidden");
+        }
+      }
+
+      // Update profile picture
+      if (profile.profileImage) {
+        const profileImage = document.getElementById(
+          "profile-image",
+        ) as HTMLImageElement;
+        const profilePlaceholder = document.getElementById(
+          "profile-placeholder",
+        );
+
+        if (profileImage && profilePlaceholder) {
+          profileImage.src = profile.profileImage;
+          profileImage.classList.remove("hidden");
+          profilePlaceholder.classList.add("hidden");
+        }
+      } else if (profile.fullName) {
+        const profilePlaceholder = document.getElementById(
+          "profile-placeholder",
+        );
+        if (profilePlaceholder) {
+          profilePlaceholder.textContent = profile.fullName
+            .charAt(0)
+            .toUpperCase();
+        }
+      }
+
+      // Update banner
+      if (profile.bannerImage) {
+        const bannerImage = document.getElementById(
+          "banner-image",
+        ) as HTMLImageElement;
+        if (bannerImage) {
+          bannerImage.src = profile.bannerImage;
+          bannerImage.classList.remove("hidden");
+        }
+      }
+
+      // Calculate profile completion
+      this.calculateProfileCompletion(profile);
+    }
+
+    calculateAge(birthDate: string): number {
+      const birth = new Date(birthDate);
+      const today = new Date();
+      let age = today.getFullYear() - birth.getFullYear();
+      const monthDiff = today.getMonth() - birth.getMonth();
+
+      if (
+        monthDiff < 0 ||
+        (monthDiff === 0 && today.getDate() < birth.getDate())
+      ) {
+        age--;
+      }
+
+      return age;
+    }
+
+    calculateProfileCompletion(profile: any) {
+      const fields = [
+        "fullName",
+        "email",
+        "bio",
+        "location",
+        "birthDate",
+        "profileImage",
+        "bannerImage",
+      ];
+      const completed = fields.filter(
+        (field) => profile[field] && profile[field].trim !== "",
+      ).length;
+      const percentage = Math.round((completed / fields.length) * 100);
+
+      const profileCompletion = document.getElementById("profile-completion");
+      if (profileCompletion) {
+        profileCompletion.textContent = `${percentage}%`;
+      }
+    }
+
+    async loadMemories() {
+      const token = localStorage.getItem("session");
+      if (!token) {
+        window.location.href = "/";
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/memories", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          this.memories = await response.json();
+          this.filteredMemories = [...this.memories];
+          this.displayMemories();
+          this.updateStats();
+        } else {
+          console.error("Failed to load memories");
+        }
+      } catch (error) {
+        console.error("Error loading memories:", error);
+      } finally {
+        document.getElementById("loading")?.classList.add("hidden");
+      }
+    }
+
+    filterMemories() {
+      const searchInput = document.getElementById(
+        "search-input",
+      ) as HTMLInputElement;
+      const typeFilter = document.getElementById(
+        "type-filter",
+      ) as HTMLSelectElement;
+
+      const searchTerm = searchInput?.value.toLowerCase().trim() || "";
+      const typeFilterValue = typeFilter?.value || "";
+
+      this.filteredMemories = this.memories.filter((memory) => {
+        const matchesSearch =
+          !searchTerm ||
+          memory.title.toLowerCase().includes(searchTerm) ||
+          memory.description.toLowerCase().includes(searchTerm) ||
+          (memory.tags &&
+            memory.tags.some((tag: string) =>
+              tag.toLowerCase().includes(searchTerm),
+            ));
+
+        const matchesType = !typeFilterValue || memory.type === typeFilterValue;
+
+        return matchesSearch && matchesType;
+      });
+
+      this.displayMemories();
+    }
+
+    updateStats() {
+      // Update memory count
+      const memoryCount = document.getElementById("memory-count");
+      if (memoryCount) {
+        memoryCount.textContent = this.memories.length.toString();
+      }
+
+      // Update memory counter
+      const memoryCounter = document.getElementById("memory-counter");
+      if (memoryCounter) {
+        memoryCounter.textContent = `${this.filteredMemories.length} of ${this.memories.length} memories`;
+      }
+
+      // Calculate days active
+      const daysActive = document.getElementById("days-active");
+      if (daysActive) {
+        const token = localStorage.getItem("session");
+        try {
+          const session = JSON.parse(atob(token!));
+          const createdAt = new Date(session.createdAt || Date.now());
+          const today = new Date();
+          const diffTime = Math.abs(today.getTime() - createdAt.getTime());
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          daysActive.textContent = diffDays.toString();
+        } catch (error) {
+          daysActive.textContent = "1";
+        }
+      }
+    }
+
+    displayMemories() {
+      const memoriesSection = document.getElementById("memories-section")!;
+      const emptyState = document.getElementById("empty-state")!;
+      const noResults = document.getElementById("no-results")!;
+      const grid = document.getElementById("memories-grid")!;
+
+      // Hide all states first
+      memoriesSection.classList.add("hidden");
+      emptyState.classList.add("hidden");
+      noResults.classList.add("hidden");
+
+      if (this.memories.length === 0) {
+        emptyState.classList.remove("hidden");
+        // Make FAB pulse when no memories
+        const fabButton = document.querySelector(".fab-button");
+        fabButton?.classList.add("fab-pulse");
+        return;
+      } else {
+        // Remove pulse when memories exist
+        const fabButton = document.querySelector(".fab-button");
+        fabButton?.classList.remove("fab-pulse");
+      }
+
+      if (this.filteredMemories.length === 0) {
+        memoriesSection.classList.remove("hidden");
+        noResults.classList.remove("hidden");
+        return;
+      }
+
+      // Show memories section
+      memoriesSection.classList.remove("hidden");
+      noResults.classList.add("hidden");
+
+      // Create memory cards with staggered animations
+      grid.innerHTML = this.filteredMemories
+        .map((memory, index) => this.createModernMemoryCard(memory, index))
+        .join("");
+
+      // Setup scroll animations for new cards
+      this.setupScrollAnimations();
+
+      // Update counter
+      this.updateStats();
+
+      // Add entrance animation for the grid
+      setTimeout(() => {
+        grid.classList.add("grid-animate-in");
+      }, 100);
+    }
+
+    createModernMemoryCard(memory: any, index: number): string {
+      const typeEmojis = {
+        memory: "💭",
+        milestone: "🎯",
+        achievement: "🏆",
+      };
+
+      const typeColors = {
+        memory:
+          "bg-gradient-to-br from-blue-50 to-blue-100 text-blue-800 border-blue-200",
+        milestone:
+          "bg-gradient-to-br from-yellow-50 to-yellow-100 text-yellow-800 border-yellow-200",
+        achievement:
+          "bg-gradient-to-br from-green-50 to-green-100 text-green-800 border-green-200",
+      };
+
+      const cardColors = {
+        memory: "from-blue-500/10 to-blue-600/10",
+        milestone: "from-yellow-500/10 to-yellow-600/10",
+        achievement: "from-green-500/10 to-green-600/10",
+      };
+
+      const formattedDate = new Date(memory.date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+
+      const tagsHtml =
+        memory.tags && memory.tags.length > 0
+          ? `<div class="flex flex-wrap gap-1 mt-3">
+             ${memory.tags
+               .map(
+                 (tag: string) =>
+                   `<span class="px-2 py-1 bg-white/50 text-gray-600 text-xs rounded-full backdrop-blur-sm">#${tag}</span>`,
+               )
+               .join("")}
+           </div>`
+          : "";
+
+      const imageHtml = memory.image
+        ? `<div class="mb-4 overflow-hidden rounded-xl group">
+             <img src="${memory.image}" alt="${memory.title}" class="w-full h-48 object-cover transform group-hover:scale-110 transition-transform duration-500">
+           </div>`
+        : `<div class="mb-4 h-48 bg-gradient-to-br ${cardColors[memory.type as keyof typeof cardColors]} rounded-xl flex items-center justify-center">
+             <span class="text-6xl opacity-50">${typeEmojis[memory.type as keyof typeof typeEmojis]}</span>
+           </div>`;
+
+      const privacyIcon = memory.isPrivate
+        ? `<svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+           </svg>`
+        : "";
+
+      // Create different animation patterns for collage effect
+      const animationPatterns = [
+        "collage-slide-left",
+        "collage-slide-right",
+        "collage-slide-up",
+        "collage-slide-down",
+        "collage-rotate-in",
+        "collage-scale-in",
+      ];
+
+      const animationClass =
+        animationPatterns[index % animationPatterns.length];
+
+      // Add random rotation for collage effect
+      const rotations = [
+        "-rotate-1",
+        "rotate-1",
+        "-rotate-2",
+        "rotate-2",
+        "rotate-0",
+      ];
+      const rotation = rotations[index % rotations.length];
+
+      return `
+        <div class="memory-card-collage ${rotation} glass rounded-2xl p-6 shadow-natural hover:shadow-natural-lg bg-gradient-to-br ${cardColors[memory.type as keyof typeof cardColors]} border border-white/20" 
+             data-index="${index}"
+             data-animation="${animationClass}"
+             style="opacity: 0; transform: translateX(${index % 2 === 0 ? "-100px" : "100px"}) translateY(30px) rotate(${index % 2 === 0 ? "-5deg" : "5deg"});">
+          ${imageHtml}
+          
+          <div class="flex items-start justify-between mb-3">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${typeColors[memory.type as keyof typeof typeColors]} backdrop-blur-sm">
+              ${typeEmojis[memory.type as keyof typeof typeEmojis]} ${memory.type}
+            </span>
+            ${privacyIcon}
+          </div>
+
+          <h3 class="text-lg font-bold text-gray-800 mb-2 line-clamp-2">${memory.title}</h3>
+          
+          <p class="text-gray-600 text-sm mb-3 line-clamp-3 leading-relaxed">${memory.description}</p>
+          
+          <div class="text-xs text-gray-500 mb-2 font-handwriting">${formattedDate}</div>
+          
+          ${tagsHtml}
+
+          <div class="flex justify-between items-center mt-4 pt-4 border-t border-white/30">
+            <button onclick="editMemory('${memory.id}')" class="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors hover:underline flex items-center gap-1">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+              </svg>
+              Edit
+            </button>
+            <button onclick="deleteMemory('${memory.id}', '${memory.title}')" class="text-red-600 hover:text-red-700 text-sm font-medium transition-colors hover:underline flex items-center gap-1">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+              </svg>
+              Delete
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    setupScrollAnimations() {
+      // Setup scroll-triggered animations for memory cards with wave effect
+      const cards = document.querySelectorAll(".memory-card-collage");
+
+      cards.forEach((card, index) => {
+        const isLeft = index % 2 === 0;
+        const rotations = [-2, 2, -1, 1, 0];
+        const finalRotation = rotations[index % rotations.length];
+
+        // Set initial state with more dramatic offset
+        (card as HTMLElement).style.opacity = "0";
+        (card as HTMLElement).style.transform =
+          `translateX(${isLeft ? "-150px" : "150px"}) translateY(50px) rotate(${isLeft ? "-12deg" : "12deg"}) scale(0.8)`;
+
+        // Use Intersection Observer for scroll animations
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const element = entry.target as HTMLElement;
+                const cardIndex = parseInt(element.dataset.index || "0");
+                const staggerDelay = (cardIndex % 6) * 150; // Stagger in groups of 6
+
+                setTimeout(() => {
+                  // Main entrance animation
+                  element.style.transition =
+                    "all 1s cubic-bezier(0.34, 1.56, 0.64, 1)";
+                  element.style.opacity = "1";
+                  element.style.transform = `translateX(0) translateY(0) rotate(${finalRotation}deg) scale(1)`;
+
+                  // Wave effect sequence
+                  setTimeout(() => {
+                    element.style.transition = "all 0.4s ease-out";
+                    element.style.transform = `translateX(0) translateY(-8px) rotate(${finalRotation + (isLeft ? 2 : -2)}deg) scale(1.02)`;
+
+                    setTimeout(() => {
+                      element.style.transition = "all 0.3s ease-in-out";
+                      element.style.transform = `translateX(0) translateY(2px) rotate(${finalRotation + (isLeft ? -1 : 1)}deg) scale(0.98)`;
+
+                      setTimeout(() => {
+                        element.style.transition =
+                          "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
+                        element.style.transform = `translateX(0) translateY(0) rotate(${finalRotation}deg) scale(1)`;
+
+                        // Add hover effects after animation completes
+                        element.addEventListener("mouseenter", () => {
+                          element.style.transition = "all 0.3s ease-out";
+                          element.style.transform = `translateX(0) translateY(-12px) rotate(0deg) scale(1.05)`;
+                          element.style.zIndex = "10";
+                        });
+
+                        element.addEventListener("mouseleave", () => {
+                          element.style.transition =
+                            "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)";
+                          element.style.transform = `translateX(0) translateY(0) rotate(${finalRotation}deg) scale(1)`;
+                          element.style.zIndex = "1";
+                        });
+                      }, 200);
+                    }, 150);
+                  }, 600);
+                }, staggerDelay);
+              }
+            });
+          },
+          {
+            threshold: 0.15,
+            rootMargin: "0px 0px -80px 0px",
+          },
+        );
+
+        observer.observe(card);
+      });
+    }
+  }
+
+  // Global functions for memory actions
+  (window as any).editMemory = (memoryId: string) => {
+    window.location.href = `/edit-memory?id=${memoryId}`;
+  };
+
+  (window as any).deleteMemory = async (memoryId: string, title: string) => {
+    if (
+      !confirm(
+        `Are you sure you want to delete "${title}"? This action cannot be undone.`,
+      )
+    ) {
+      return;
+    }
+
+    const token = localStorage.getItem("session");
+    if (!token) {
+      window.location.href = "/";
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/memories?id=${memoryId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        // Reload the page to refresh the memories list
+        window.location.reload();
+      } else {
+        const result = await response.json();
+        alert(result.error || "Failed to delete memory");
+      }
+    } catch (error) {
+      console.error("Error deleting memory:", error);
+      alert("Failed to delete memory. Please try again.");
+    }
+  };
+
+  // Initialize Lenis smooth scroll globally
+  function initLenis() {
+    if (typeof (window as any).Lenis !== "undefined") {
+      const lenis = new (window as any).Lenis({
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        direction: "vertical",
+        gestureDirection: "vertical",
+        smooth: true,
+        smoothTouch: false,
+        touchMultiplier: 2,
+      });
+
+      function raf(time: number) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+
+      // Store lenis instance globally
+      (window as any).lenis = lenis;
+
+      // Add scroll-based parallax effects using regular scroll event
+      let ticking = false;
+
+      function updateParallax() {
+        const scrollY = window.scrollY;
+        const cards = document.querySelectorAll(".memory-card-collage");
+
+        cards.forEach((card, index) => {
+          const element = card as HTMLElement;
+          const rect = element.getBoundingClientRect();
+
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            const speed = 0.3 + (index % 3) * 0.1;
+            const yPos = -(scrollY * speed * 0.05);
+            const rotation = Math.sin(scrollY * 0.002 + index) * 1.5;
+
+            if (element.style.opacity === "1") {
+              element.style.transform = `translateY(${yPos}px) rotate(${rotation}deg)`;
+            }
+          }
+        });
+
+        ticking = false;
+      }
+
+      function requestTick() {
+        if (!ticking) {
+          requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
+      }
+
+      window.addEventListener("scroll", requestTick, { passive: true });
+    }
+  }
+
+  // Initialize dashboard when DOM is loaded
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      initLenis();
+      new Dashboard();
+    });
+  } else {
+    initLenis();
+    new Dashboard();
+  }
+</script>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Enhanced grid for collage effect */
+  #memories-grid {
+    position: relative;
+    overflow: visible;
+  }
+
+  /* Smooth scroll behavior */
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Loading animation enhancement */
+  #loading {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Memory cards collage positioning */
+  .memory-card-collage {
+    position: relative;
+    z-index: 1;
+  }
+
+  .memory-card-collage:hover {
+    z-index: 10;
+  }
+
+  /* Grid entrance animation */
+  #memories-grid {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+
+  #memories-grid.grid-animate-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Floating Action Button */
+  .fab-button {
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .fab-button:hover {
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  #fab-container:hover .fab-tooltip {
+    opacity: 1;
+  }
+
+  /* Pulse animation for FAB when no memories */
+  .fab-pulse {
+    animation: fab-pulse 2s infinite;
+  }
+
+  @keyframes fab-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+    }
+  }
+</style>

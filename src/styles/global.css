@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+/* Custom fonts - you can replace these with your preferred fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Caveat:wght@400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.font-handwriting {
+  font-family: 'Caveat', cursive;
+}
+
+/* Smooth scrolling with Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Custom animations */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+}
+
+@keyframes drift {
+
+  0%,
+  100% {
+    transform: translateX(0px) translateY(0px);
+  }
+
+  25% {
+    transform: translateX(5px) translateY(-5px);
+  }
+
+  75% {
+    transform: translateX(-5px) translateY(5px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-drift {
+  animation: drift 8s ease-in-out infinite;
+}
+
+/* Polaroid effect */
+.polaroid {
+  background: white;
+  padding: 10px 10px 40px 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: rotate(-2deg);
+  transition: all 0.3s ease;
+}
+
+.polaroid:hover {
+  transform: rotate(0deg);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.polaroid:nth-child(even) {
+  transform: rotate(2deg);
+}
+
+.polaroid:nth-child(even):hover {
+  transform: rotate(0deg);
+}

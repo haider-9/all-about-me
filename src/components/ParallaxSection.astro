@@ -1,0 +1,63 @@
+---
+// Parallax scrolling section component
+interface Props {
+  speed?: number;
+  direction?: 'up' | 'down';
+  className?: string;
+}
+
+const { speed = 0.5, direction = 'up', className = '' } = Astro.props;
+---
+
+<div 
+  class={`parallax-section ${className}`}
+  data-speed={speed}
+  data-direction={direction}
+>
+  <slot />
+</div>
+
+<script>
+  class ParallaxController {
+    private elements: NodeListOf<HTMLElement>;
+    
+    constructor() {
+      this.elements = document.querySelectorAll('.parallax-section');
+      this.init();
+    }
+    
+    init() {
+      if (this.elements.length === 0) return;
+      
+      this.handleScroll();
+      window.addEventListener('scroll', () => this.handleScroll());
+    }
+    
+    handleScroll() {
+      const scrollTop = window.scrollY;
+      
+      this.elements.forEach(element => {
+        const speed = parseFloat(element.dataset.speed || '0.5');
+        const direction = element.dataset.direction || 'up';
+        const rect = element.getBoundingClientRect();
+        const elementTop = rect.top + scrollTop;
+        
+        if (rect.bottom >= 0 && rect.top <= window.innerHeight) {
+          const yPos = (scrollTop - elementTop) * speed;
+          const transform = direction === 'up' 
+            ? `translateY(${-yPos}px)` 
+            : `translateY(${yPos}px)`;
+          
+          element.style.transform = transform;
+        }
+      });
+    }
+  }
+  
+  // Initialize when DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => new ParallaxController());
+  } else {
+    new ParallaxController();
+  }
+</script>

@@ -1,0 +1,261 @@
+---
+// Authentication modal component
+---
+
+<div id="auth-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center">
+  <div class="auth-modal-content bg-white rounded-2xl p-8 max-w-md w-full mx-4 transform scale-95 opacity-0 transition-all duration-300">
+    <!-- Login Form -->
+    <div id="login-form" class="auth-form">
+      <div class="text-center mb-6">
+        <h2 class="text-3xl font-bold bg-gradient-to-r from-blue-700 to-slate-700 bg-clip-text text-transparent mb-2">
+          Welcome Back
+        </h2>
+        <p class="text-gray-600">Sign in to access your personal diary</p>
+      </div>
+      
+      <form class="space-y-4">
+        <div class="form-group">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+          <input 
+            type="email" 
+            name="email" 
+            required
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            placeholder="your@email.com"
+          />
+        </div>
+        
+        <div class="form-group">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+          <input 
+            type="password" 
+            name="password" 
+            required
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            placeholder="••••••••"
+          />
+        </div>
+        
+        <button 
+          type="submit" 
+          class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-natural hover:shadow-natural-lg"
+        >
+          Sign In
+        </button>
+      </form>
+      
+      <div class="text-center mt-6">
+        <p class="text-gray-600">
+          Don't have an account? 
+          <button id="show-signup" class="text-blue-600 hover:text-blue-700 font-semibold">
+            Sign up
+          </button>
+        </p>
+      </div>
+    </div>
+    
+    <!-- Signup Form -->
+    <div id="signup-form" class="auth-form hidden">
+      <div class="text-center mb-6">
+        <h2 class="text-3xl font-bold bg-gradient-to-r from-blue-700 to-slate-700 bg-clip-text text-transparent mb-2">
+          Create Account
+        </h2>
+        <p class="text-gray-600">Start your digital diary journey</p>
+      </div>
+      
+      <form class="space-y-4">
+        <div class="form-group">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+          <input 
+            type="text" 
+            name="name" 
+            required
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            placeholder="Your Name"
+          />
+        </div>
+        
+        <div class="form-group">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+          <input 
+            type="email" 
+            name="email" 
+            required
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            placeholder="your@email.com"
+          />
+        </div>
+        
+        <div class="form-group">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+          <input 
+            type="password" 
+            name="password" 
+            required
+            minlength="6"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+            placeholder="••••••••"
+          />
+        </div>
+        
+        <button 
+          type="submit" 
+          class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-natural hover:shadow-natural-lg"
+        >
+          Create Account
+        </button>
+      </form>
+      
+      <div class="text-center mt-6">
+        <p class="text-gray-600">
+          Already have an account? 
+          <button id="show-login" class="text-blue-600 hover:text-blue-700 font-semibold">
+            Sign in
+          </button>
+        </p>
+      </div>
+    </div>
+    
+    <!-- Close Button -->
+    <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  .auth-modal-content.show {
+    transform: scale(1);
+    opacity: 1;
+  }
+  
+  .form-group input:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1);
+  }
+  
+  .auth-form {
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  const modal = document.getElementById('auth-modal');
+  const modalContent = document.querySelector('.auth-modal-content');
+  const loginForm = document.getElementById('login-form');
+  const signupForm = document.getElementById('signup-form');
+  const showSignup = document.getElementById('show-signup');
+  const showLogin = document.getElementById('show-login');
+  const closeModal = document.getElementById('close-modal');
+  
+  // Show modal
+  function showAuthModal() {
+    modal?.classList.remove('hidden');
+    modal?.classList.add('flex');
+    setTimeout(() => {
+      modalContent?.classList.add('show');
+    }, 10);
+  }
+  
+  // Hide modal
+  function hideAuthModal() {
+    modalContent?.classList.remove('show');
+    setTimeout(() => {
+      modal?.classList.add('hidden');
+      modal?.classList.remove('flex');
+    }, 300);
+  }
+  
+  // Switch between forms
+  showSignup?.addEventListener('click', () => {
+    loginForm?.classList.add('hidden');
+    signupForm?.classList.remove('hidden');
+  });
+  
+  showLogin?.addEventListener('click', () => {
+    signupForm?.classList.add('hidden');
+    loginForm?.classList.remove('hidden');
+  });
+  
+  // Close modal
+  closeModal?.addEventListener('click', hideAuthModal);
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) hideAuthModal();
+  });
+  
+  // Handle form submissions with toast.promise
+  loginForm?.querySelector('form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    
+    const loginPromise = fetch('/api/auth/signin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: formData.get('email'),
+        password: formData.get('password')
+      })
+    }).then(async (response) => {
+      const result = await response.json();
+      if (response.ok) {
+        localStorage.setItem('session', result.token);
+        setTimeout(() => window.location.reload(), 1000);
+        return result;
+      } else {
+        throw new Error(result.error || 'Login failed');
+      }
+    });
+
+    (window as any).toast?.promise(loginPromise, {
+      loading: 'Signing in...',
+      success: 'Welcome back! Redirecting...',
+      error: 'Login failed. Please try again.'
+    });
+  });
+  
+  signupForm?.querySelector('form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    
+    const signupPromise = fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: formData.get('name'),
+        email: formData.get('email'),
+        password: formData.get('password')
+      })
+    }).then(async (response) => {
+      const result = await response.json();
+      if (response.ok) {
+        localStorage.setItem('session', result.token);
+        setTimeout(() => window.location.reload(), 1000);
+        return result;
+      } else {
+        throw new Error(result.error || 'Signup failed');
+      }
+    });
+
+    (window as any).toast?.promise(signupPromise, {
+      loading: 'Creating account...',
+      success: 'Account created successfully! Welcome!',
+      error: 'Signup failed. Please try again.'
+    });
+  });
+  
+  // Expose function globally
+  (window as any).showAuthModal = showAuthModal;
+</script>

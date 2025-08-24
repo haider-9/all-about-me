@@ -1,0 +1,490 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+---
+
+<Layout title="Edit Profile - All About Me">
+  <Navbar />
+  
+  <main class="pt-20 min-h-screen bg-natural-gradient">
+    <div class="container mx-auto px-4 py-8">
+      <!-- Page Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-700 to-slate-700 bg-clip-text text-transparent">
+          Edit Your Profile
+        </h1>
+        <p class="text-gray-600 font-handwriting text-xl">
+          Customize your digital diary experience ✨
+        </p>
+      </div>
+
+      <!-- Profile Form -->
+      <div class="max-w-4xl mx-auto">
+        <!-- Banner Section -->
+        <div class="glass rounded-2xl p-6 mb-8 shadow-natural-lg">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+            <svg class="w-6 h-6 mr-2 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            Profile Banner
+          </h2>
+          
+          <!-- Current Banner Preview -->
+          <div id="banner-preview" class="relative w-full h-32 sm:h-40 md:h-48 bg-warm-gradient rounded-xl mb-4 overflow-hidden">
+            <img id="banner-image" class="w-full h-full object-cover hidden" alt="Profile banner">
+            <div id="banner-placeholder" class="w-full h-full flex items-center justify-center text-gray-500">
+              <div class="text-center">
+                <svg class="w-16 h-16 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <p class="font-handwriting text-lg">Upload your banner image</p>
+              </div>
+            </div>
+            
+            <!-- Remove Banner Button -->
+            <button id="remove-banner" class="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors hidden">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Banner Upload -->
+          <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+            <input type="file" id="banner-upload" accept="image/*" class="hidden">
+            <button id="banner-upload-btn" class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-2 rounded-full font-semibold hover:from-orange-600 hover:to-red-600 transition-all duration-200">
+              Choose Banner Image
+            </button>
+            <p class="text-sm text-gray-500">Recommended: 1200x300px, max 5MB</p>
+          </div>
+        </div>
+
+        <!-- Profile Picture Section -->
+        <div class="glass rounded-2xl p-6 mb-8 shadow-natural-lg">
+          <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+            <svg class="w-6 h-6 mr-2 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            Profile Picture
+          </h2>
+
+          <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
+            <!-- Current Profile Picture -->
+            <div class="relative flex-shrink-0 self-center sm:self-auto">
+              <div id="profile-pic-preview" class="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden bg-gradient-to-r from-orange-500 to-red-500 flex items-center justify-center">
+                <img id="profile-image" class="w-full h-full object-cover hidden" alt="Profile picture">
+                <div id="profile-placeholder" class="text-white text-4xl font-bold">
+                  ?
+                </div>
+              </div>
+              
+              <!-- Remove Profile Picture Button -->
+              <button id="remove-profile-pic" class="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors hidden">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Upload Controls -->
+            <div>
+              <input type="file" id="profile-pic-upload" accept="image/*" class="hidden">
+              <button id="profile-pic-upload-btn" class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-2 rounded-full font-semibold hover:from-orange-600 hover:to-red-600 transition-all duration-200 mb-2 block">
+                Choose Profile Picture
+              </button>
+              <p class="text-sm text-gray-500">Recommended: Square image, max 2MB</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Personal Information -->
+        <div class="glass rounded-2xl p-6 mb-8 shadow-natural-lg">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+            <svg class="w-6 h-6 mr-2 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+            </svg>
+            Personal Information
+          </h2>
+
+          <form id="profile-form" class="space-y-6">
+            <div class="grid md:grid-cols-2 gap-6">
+              <!-- Full Name -->
+              <div>
+                <label for="fullName" class="block text-sm font-semibold text-gray-700 mb-2">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                  placeholder="Enter your full name"
+                >
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                  placeholder="Enter your email"
+                >
+              </div>
+
+              <!-- Birth Date -->
+              <div>
+                <label for="birthDate" class="block text-sm font-semibold text-gray-700 mb-2">
+                  Birth Date
+                </label>
+                <input
+                  type="date"
+                  id="birthDate"
+                  name="birthDate"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                >
+              </div>
+
+              <!-- Location -->
+              <div>
+                <label for="location" class="block text-sm font-semibold text-gray-700 mb-2">
+                  Location
+                </label>
+                <input
+                  type="text"
+                  id="location"
+                  name="location"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                  placeholder="City, Country"
+                >
+              </div>
+            </div>
+
+            <!-- Bio -->
+            <div>
+              <label for="bio" class="block text-sm font-semibold text-gray-700 mb-2">
+                Bio
+              </label>
+              <textarea
+                id="bio"
+                name="bio"
+                rows="4"
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 resize-none"
+                placeholder="Tell us about yourself..."
+              ></textarea>
+            </div>
+
+            <!-- Interests -->
+            <div>
+              <label for="interests" class="block text-sm font-semibold text-gray-700 mb-2">
+                Interests & Hobbies
+              </label>
+              <input
+                type="text"
+                id="interests"
+                name="interests"
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                placeholder="Photography, Travel, Coding, Music... (comma separated)"
+              >
+            </div>
+          </form>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4 mb-8">
+          <button
+            id="save-profile"
+            class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-3 rounded-full font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-natural hover:shadow-natural-lg"
+          >
+            Save Changes
+          </button>
+          <button
+            id="cancel-edit"
+            class="border-2 border-gray-300 text-gray-700 px-8 py-3 rounded-full font-semibold hover:bg-gray-50 transition-all duration-200"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+      <div class="glass rounded-2xl p-8 text-center">
+        <div class="animate-spin w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+        <p class="text-gray-700 font-semibold">Saving your profile...</p>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  class ProfileEditor {
+    constructor() {
+      this.setupEventListeners();
+      this.loadUserProfile();
+    }
+
+    setupEventListeners() {
+      // Banner upload
+      const bannerUploadBtn = document.getElementById('banner-upload-btn');
+      const bannerUpload = document.getElementById('banner-upload');
+      const removeBanner = document.getElementById('remove-banner');
+
+      bannerUploadBtn?.addEventListener('click', () => bannerUpload?.click());
+      bannerUpload?.addEventListener('change', (e) => this.handleBannerUpload(e));
+      removeBanner?.addEventListener('click', () => this.removeBanner());
+
+      // Profile picture upload
+      const profilePicUploadBtn = document.getElementById('profile-pic-upload-btn');
+      const profilePicUpload = document.getElementById('profile-pic-upload');
+      const removeProfilePic = document.getElementById('remove-profile-pic');
+
+      profilePicUploadBtn?.addEventListener('click', () => profilePicUpload?.click());
+      profilePicUpload?.addEventListener('change', (e) => this.handleProfilePicUpload(e));
+      removeProfilePic?.addEventListener('click', () => this.removeProfilePic());
+
+      // Form actions
+      const saveProfile = document.getElementById('save-profile');
+      const cancelEdit = document.getElementById('cancel-edit');
+
+      saveProfile?.addEventListener('click', () => this.saveProfile());
+      cancelEdit?.addEventListener('click', () => this.cancelEdit());
+    }
+
+    async loadUserProfile() {
+      const token = localStorage.getItem('session');
+      if (!token) {
+        window.location.href = '/';
+        return;
+      }
+
+      try {
+        const session = JSON.parse(atob(token));
+        if (session.exp <= Date.now()) {
+          localStorage.removeItem('session');
+          window.location.href = '/';
+          return;
+        }
+
+        // Load existing profile data
+        const response = await fetch('/api/profile', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          const profile = await response.json();
+          this.populateForm(profile);
+        }
+      } catch (error) {
+        console.error('Error loading profile:', error);
+      }
+    }
+
+    populateForm(profile: any) {
+      // Populate form fields
+      const fields = ['fullName', 'email', 'birthDate', 'location', 'bio', 'interests'];
+      fields.forEach(field => {
+        const element = document.getElementById(field) as HTMLInputElement;
+        if (element && profile[field]) {
+          element.value = profile[field];
+        }
+      });
+
+      // Load banner image
+      if (profile.bannerImage) {
+        this.displayBanner(profile.bannerImage);
+      }
+
+      // Load profile picture
+      if (profile.profileImage) {
+        this.displayProfilePic(profile.profileImage);
+      } else if (profile.fullName) {
+        const placeholder = document.getElementById('profile-placeholder');
+        if (placeholder) {
+          placeholder.textContent = profile.fullName.charAt(0).toUpperCase();
+        }
+      }
+    }
+
+    handleBannerUpload(event: Event) {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      if (file.size > 5 * 1024 * 1024) {
+        (window as any).toast?.error('Banner image must be less than 5MB');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        this.displayBanner(result);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    handleProfilePicUpload(event: Event) {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      if (file.size > 2 * 1024 * 1024) {
+        (window as any).toast?.error('Profile picture must be less than 2MB');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        this.displayProfilePic(result);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    displayBanner(imageSrc: string) {
+      const bannerImage = document.getElementById('banner-image') as HTMLImageElement;
+      const bannerPlaceholder = document.getElementById('banner-placeholder');
+      const removeBanner = document.getElementById('remove-banner');
+
+      if (bannerImage && bannerPlaceholder && removeBanner) {
+        bannerImage.src = imageSrc;
+        bannerImage.classList.remove('hidden');
+        bannerPlaceholder.classList.add('hidden');
+        removeBanner.classList.remove('hidden');
+      }
+    }
+
+    displayProfilePic(imageSrc: string) {
+      const profileImage = document.getElementById('profile-image') as HTMLImageElement;
+      const profilePlaceholder = document.getElementById('profile-placeholder');
+      const removeProfilePic = document.getElementById('remove-profile-pic');
+
+      if (profileImage && profilePlaceholder && removeProfilePic) {
+        profileImage.src = imageSrc;
+        profileImage.classList.remove('hidden');
+        profilePlaceholder.classList.add('hidden');
+        removeProfilePic.classList.remove('hidden');
+      }
+    }
+
+    removeBanner() {
+      const bannerImage = document.getElementById('banner-image') as HTMLImageElement;
+      const bannerPlaceholder = document.getElementById('banner-placeholder');
+      const removeBanner = document.getElementById('remove-banner');
+      const bannerUpload = document.getElementById('banner-upload') as HTMLInputElement;
+
+      if (bannerImage && bannerPlaceholder && removeBanner && bannerUpload) {
+        bannerImage.classList.add('hidden');
+        bannerPlaceholder.classList.remove('hidden');
+        removeBanner.classList.add('hidden');
+        bannerUpload.value = '';
+      }
+    }
+
+    removeProfilePic() {
+      const profileImage = document.getElementById('profile-image') as HTMLImageElement;
+      const profilePlaceholder = document.getElementById('profile-placeholder');
+      const removeProfilePic = document.getElementById('remove-profile-pic');
+      const profilePicUpload = document.getElementById('profile-pic-upload') as HTMLInputElement;
+
+      if (profileImage && profilePlaceholder && removeProfilePic && profilePicUpload) {
+        profileImage.classList.add('hidden');
+        profilePlaceholder.classList.remove('hidden');
+        removeProfilePic.classList.add('hidden');
+        profilePicUpload.value = '';
+        
+        // Reset to initial
+        const fullName = (document.getElementById('fullName') as HTMLInputElement)?.value;
+        profilePlaceholder.textContent = fullName ? fullName.charAt(0).toUpperCase() : '?';
+      }
+    }
+
+    async saveProfile() {
+      const token = localStorage.getItem('session');
+      if (!token) {
+        window.location.href = '/';
+        return;
+      }
+
+      // Collect form data
+      const formData = new FormData();
+      const fields = ['fullName', 'email', 'birthDate', 'location', 'bio', 'interests'];
+      
+      fields.forEach(field => {
+        const element = document.getElementById(field) as HTMLInputElement;
+        if (element?.value) {
+          formData.append(field, element.value);
+        }
+      });
+
+      // Add images if uploaded
+      const bannerUpload = document.getElementById('banner-upload') as HTMLInputElement;
+      const profilePicUpload = document.getElementById('profile-pic-upload') as HTMLInputElement;
+
+      if (bannerUpload?.files?.[0]) {
+        formData.append('bannerImage', bannerUpload.files[0]);
+      }
+
+      if (profilePicUpload?.files?.[0]) {
+        formData.append('profileImage', profilePicUpload.files[0]);
+      }
+
+      const savePromise = fetch('/api/profile', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      }).then(async (response) => {
+        if (response.ok) {
+          // Update navbar user info
+          const fullName = (document.getElementById('fullName') as HTMLInputElement)?.value;
+          const email = (document.getElementById('email') as HTMLInputElement)?.value;
+          
+          if (typeof (window as any).updateNavbarUserInfo === 'function') {
+            (window as any).updateNavbarUserInfo({ name: fullName || 'User', email: email || '' });
+          }
+          
+          // Redirect to dashboard after a delay
+          setTimeout(() => {
+            window.location.href = '/dashboard';
+          }, 1500);
+          
+          return response;
+        } else {
+          throw new Error('Failed to save profile');
+        }
+      });
+
+      (window as any).toast?.promise(savePromise, {
+        loading: 'Saving profile...',
+        success: 'Profile saved successfully! Redirecting...',
+        error: 'Failed to save profile. Please try again.'
+      });
+    }
+
+
+
+    cancelEdit() {
+      if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+        window.location.href = '/dashboard';
+      }
+    }
+  }
+
+  // Initialize profile editor when DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new ProfileEditor();
+    });
+  } else {
+    new ProfileEditor();
+  }
+</script>
+</Layout>

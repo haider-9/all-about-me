@@ -1,0 +1,493 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+---
+
+<Layout title="Edit Memory - All About Me">
+  <Navbar />
+  
+  <main class="pt-20 min-h-screen bg-natural-gradient">
+    <div class="container mx-auto px-4 py-8">
+      <!-- Loading State -->
+      <div id="loading" class="text-center py-12">
+        <div class="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+        <p class="text-gray-600">Loading memory...</p>
+      </div>
+
+      <!-- Page Header -->
+      <div id="content" class="hidden">
+        <div class="text-center mb-8">
+          <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-700 to-slate-700 bg-clip-text text-transparent">
+            Edit Memory
+          </h1>
+          <p class="text-gray-600 text-lg">
+            Update your special moment ✨
+          </p>
+        </div>
+
+        <!-- Memory Form -->
+        <div class="max-w-2xl mx-auto">
+          <form id="memory-form" class="glass rounded-2xl p-8 shadow-natural-lg">
+            <!-- Memory Type -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-3">Memory Type</label>
+              <div class="grid grid-cols-3 gap-3">
+                <label class="memory-type-option cursor-pointer">
+                  <input type="radio" name="type" value="memory" class="sr-only">
+                  <div class="memory-type-card bg-gray-50 border-2 border-gray-200 rounded-xl p-4 text-center transition-all duration-200 hover:bg-gray-100">
+                    <div class="text-2xl mb-2">💭</div>
+                    <div class="font-semibold text-gray-700">Memory</div>
+                    <div class="text-xs text-gray-600">Personal moments</div>
+                  </div>
+                </label>
+                
+                <label class="memory-type-option cursor-pointer">
+                  <input type="radio" name="type" value="milestone" class="sr-only">
+                  <div class="memory-type-card bg-gray-50 border-2 border-gray-200 rounded-xl p-4 text-center transition-all duration-200 hover:bg-gray-100">
+                    <div class="text-2xl mb-2">🎯</div>
+                    <div class="font-semibold text-gray-700">Milestone</div>
+                    <div class="text-xs text-gray-600">Important events</div>
+                  </div>
+                </label>
+                
+                <label class="memory-type-option cursor-pointer">
+                  <input type="radio" name="type" value="achievement" class="sr-only">
+                  <div class="memory-type-card bg-gray-50 border-2 border-gray-200 rounded-xl p-4 text-center transition-all duration-200 hover:bg-gray-100">
+                    <div class="text-2xl mb-2">🏆</div>
+                    <div class="font-semibold text-gray-700">Achievement</div>
+                    <div class="text-xs text-gray-600">Accomplishments</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Title -->
+            <div class="mb-6">
+              <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                Memory Title *
+              </label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                required
+                maxlength="100"
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                placeholder="Give your memory a meaningful title..."
+              >
+              <div class="text-xs text-gray-500 mt-1">
+                <span id="title-count">0</span>/100 characters
+              </div>
+            </div>
+
+            <!-- Date -->
+            <div class="mb-6">
+              <label for="date" class="block text-sm font-medium text-gray-700 mb-2">
+                When did this happen? *
+              </label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              >
+            </div>
+
+            <!-- Description -->
+            <div class="mb-6">
+              <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                Tell your story *
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                required
+                rows="6"
+                maxlength="1000"
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
+                placeholder="Describe what happened, how you felt, why it was special..."
+              ></textarea>
+              <div class="text-xs text-gray-500 mt-1">
+                <span id="description-count">0</span>/1000 characters
+              </div>
+            </div>
+
+            <!-- Current Image Display -->
+            <div id="current-image-section" class="mb-6 hidden">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Current Image
+              </label>
+              <div class="relative">
+                <img id="current-image" class="w-full h-48 object-cover rounded-lg" alt="Current memory image">
+                <button type="button" id="remove-current-image" class="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                <span id="image-label">Add a Photo (Optional)</span>
+              </label>
+              <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-blue-400 transition-colors">
+                <input type="file" id="image" name="image" accept="image/*" class="hidden">
+                <div id="image-upload-area" class="cursor-pointer">
+                  <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                  </svg>
+                  <p class="text-gray-600 mb-2">Click to upload a new image</p>
+                  <p class="text-xs text-gray-500">PNG, JPG up to 5MB</p>
+                </div>
+                <div id="image-preview" class="hidden">
+                  <img id="preview-img" class="max-w-full h-48 object-cover rounded-lg mx-auto mb-2" alt="Preview">
+                  <button type="button" id="remove-image" class="text-red-600 hover:text-red-700 text-sm">
+                    Remove New Image
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tags -->
+            <div class="mb-6">
+              <label for="tags" class="block text-sm font-medium text-gray-700 mb-2">
+                Tags (Optional)
+              </label>
+              <input
+                type="text"
+                id="tags"
+                name="tags"
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                placeholder="family, travel, birthday, graduation... (comma separated)"
+              >
+              <div class="text-xs text-gray-500 mt-1">
+                Separate tags with commas to help organize your memories
+              </div>
+            </div>
+
+            <!-- Privacy Setting -->
+            <div class="mb-8">
+              <label class="flex items-center cursor-pointer">
+                <input type="checkbox" id="isPrivate" name="isPrivate" class="sr-only">
+                <div class="privacy-toggle w-12 h-6 bg-gray-300 rounded-full relative transition-colors duration-200">
+                  <div class="privacy-toggle-dot w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 transition-transform duration-200"></div>
+                </div>
+                <div class="ml-3">
+                  <div class="font-medium text-gray-700">Private Memory</div>
+                  <div class="text-xs text-gray-500">Only you can see this memory</div>
+                </div>
+              </label>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+              <button
+                type="submit"
+                id="save-memory"
+                class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-6 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-natural hover:shadow-natural-lg"
+              >
+                Update Memory
+              </button>
+              <a
+                href="/memories"
+                class="flex-1 text-center border-2 border-gray-300 text-gray-700 py-3 px-6 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-200"
+              >
+                Cancel
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  /* Memory type selection styles */
+  .memory-type-option input:checked + .memory-type-card {
+    border-color: #2563eb;
+    background-color: #dbeafe;
+  }
+
+  /* Privacy toggle styles */
+  .privacy-toggle.active {
+    background-color: #2563eb;
+  }
+
+  .privacy-toggle.active .privacy-toggle-dot {
+    transform: translateX(1.5rem);
+  }
+
+  /* Character counter styles */
+  .char-limit-warning {
+    color: #f59e0b;
+  }
+
+  .char-limit-danger {
+    color: #ef4444;
+  }
+</style>
+
+<script>
+  class EditMemoryForm {
+    private memoryId: string | null = null;
+    private form: HTMLFormElement;
+    private currentImageRemoved = false;
+
+    constructor() {
+      this.form = document.getElementById('memory-form') as HTMLFormElement;
+      this.memoryId = new URLSearchParams(window.location.search).get('id');
+      
+      if (!this.memoryId) {
+        (window as any).toast?.error('Memory ID not provided');
+        window.location.href = '/memories';
+        return;
+      }
+
+      this.loadMemory();
+      this.setupEventListeners();
+      this.setupCharacterCounters();
+      this.setupImageUpload();
+      this.setupPrivacyToggle();
+      this.setupMemoryTypeSelection();
+    }
+
+    async loadMemory() {
+      const token = localStorage.getItem('session');
+      if (!token) {
+        window.location.href = '/';
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/memories?id=${this.memoryId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          const memory = await response.json();
+          this.populateForm(memory);
+          document.getElementById('loading')?.classList.add('hidden');
+          document.getElementById('content')?.classList.remove('hidden');
+        } else {
+          (window as any).toast?.error('Memory not found');
+          window.location.href = '/memories';
+        }
+      } catch (error) {
+        console.error('Error loading memory:', error);
+        (window as any).toast?.error('Failed to load memory');
+        window.location.href = '/memories';
+      }
+    }
+
+    populateForm(memory: any) {
+      // Set form values
+      (document.getElementById('title') as HTMLInputElement).value = memory.title;
+      (document.getElementById('description') as HTMLTextAreaElement).value = memory.description;
+      (document.getElementById('date') as HTMLInputElement).value = memory.date;
+      (document.getElementById('tags') as HTMLInputElement).value = memory.tags ? memory.tags.join(', ') : '';
+      (document.getElementById('isPrivate') as HTMLInputElement).checked = memory.isPrivate;
+
+      // Set memory type
+      const typeRadio = document.querySelector(`input[name="type"][value="${memory.type}"]`) as HTMLInputElement;
+      if (typeRadio) {
+        typeRadio.checked = true;
+        this.updateTypeSelection(memory.type);
+      }
+
+      // Update privacy toggle
+      const toggle = document.querySelector('.privacy-toggle')!;
+      toggle.classList.toggle('active', memory.isPrivate);
+
+      // Show current image if exists
+      if (memory.image) {
+        const currentImageSection = document.getElementById('current-image-section')!;
+        const currentImage = document.getElementById('current-image') as HTMLImageElement;
+        const imageLabel = document.getElementById('image-label')!;
+        
+        currentImage.src = memory.image;
+        currentImageSection.classList.remove('hidden');
+        imageLabel.textContent = 'Replace Image (Optional)';
+      }
+
+      // Update character counters
+      this.updateCharacterCount('title');
+      this.updateCharacterCount('description');
+    }
+
+    setupEventListeners() {
+      this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+      
+      const removeCurrentImageBtn = document.getElementById('remove-current-image');
+      removeCurrentImageBtn?.addEventListener('click', () => this.removeCurrentImage());
+    }
+
+    setupCharacterCounters() {
+      const titleInput = document.getElementById('title') as HTMLInputElement;
+      const descriptionInput = document.getElementById('description') as HTMLTextAreaElement;
+
+      titleInput.addEventListener('input', () => this.updateCharacterCount('title'));
+      descriptionInput.addEventListener('input', () => this.updateCharacterCount('description'));
+    }
+
+    updateCharacterCount(fieldName: string) {
+      const input = document.getElementById(fieldName) as HTMLInputElement | HTMLTextAreaElement;
+      const counter = document.getElementById(`${fieldName}-count`)!;
+      const count = input.value.length;
+      const maxLength = fieldName === 'title' ? 100 : 1000;
+      
+      counter.textContent = count.toString();
+      
+      const warningThreshold = maxLength * 0.8;
+      const dangerThreshold = maxLength * 0.95;
+      
+      if (count > dangerThreshold) {
+        counter.className = 'char-limit-danger';
+      } else if (count > warningThreshold) {
+        counter.className = 'char-limit-warning';
+      } else {
+        counter.className = '';
+      }
+    }
+
+    setupImageUpload() {
+      const imageInput = document.getElementById('image') as HTMLInputElement;
+      const uploadArea = document.getElementById('image-upload-area')!;
+      const preview = document.getElementById('image-preview')!;
+      const previewImg = document.getElementById('preview-img') as HTMLImageElement;
+      const removeBtn = document.getElementById('remove-image')!;
+
+      uploadArea.addEventListener('click', () => imageInput.click());
+
+      imageInput.addEventListener('change', (e) => {
+        const file = (e.target as HTMLInputElement).files?.[0];
+        if (file) {
+          if (file.size > 5 * 1024 * 1024) {
+            (window as any).toast?.error('Image must be less than 5MB');
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            previewImg.src = e.target?.result as string;
+            uploadArea.classList.add('hidden');
+            preview.classList.remove('hidden');
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      removeBtn.addEventListener('click', () => {
+        imageInput.value = '';
+        uploadArea.classList.remove('hidden');
+        preview.classList.add('hidden');
+      });
+    }
+
+    removeCurrentImage() {
+      const currentImageSection = document.getElementById('current-image-section')!;
+      const imageLabel = document.getElementById('image-label')!;
+      
+      currentImageSection.classList.add('hidden');
+      imageLabel.textContent = 'Add a Photo (Optional)';
+      this.currentImageRemoved = true;
+    }
+
+    setupPrivacyToggle() {
+      const checkbox = document.getElementById('isPrivate') as HTMLInputElement;
+      const toggle = document.querySelector('.privacy-toggle')!;
+
+      toggle.addEventListener('click', () => {
+        checkbox.checked = !checkbox.checked;
+        toggle.classList.toggle('active', checkbox.checked);
+      });
+    }
+
+    setupMemoryTypeSelection() {
+      const typeOptions = document.querySelectorAll('.memory-type-option');
+      
+      typeOptions.forEach(option => {
+        option.addEventListener('click', () => {
+          const radio = option.querySelector('input[type="radio"]') as HTMLInputElement;
+          radio.checked = true;
+          this.updateTypeSelection(radio.value);
+        });
+      });
+    }
+
+    updateTypeSelection(selectedType: string) {
+      const typeOptions = document.querySelectorAll('.memory-type-option');
+      
+      typeOptions.forEach(option => {
+        const radio = option.querySelector('input[type="radio"]') as HTMLInputElement;
+        const card = option.querySelector('.memory-type-card')!;
+        
+        if (radio.value === selectedType) {
+          card.classList.remove('bg-gray-50', 'border-gray-200');
+          card.classList.add('bg-blue-50', 'border-blue-200');
+        } else {
+          card.classList.remove('bg-blue-50', 'border-blue-200');
+          card.classList.add('bg-gray-50', 'border-gray-200');
+        }
+      });
+    }
+
+    async handleSubmit(e: Event) {
+      e.preventDefault();
+      
+      const token = localStorage.getItem('session');
+      if (!token) {
+        (window as any).toast?.error('Please sign in to edit memories');
+        window.location.href = '/';
+        return;
+      }
+
+      const formData = new FormData(this.form);
+      
+      // Add flag to remove current image if needed
+      if (this.currentImageRemoved) {
+        formData.append('removeCurrentImage', 'true');
+      }
+
+      const updatePromise = fetch(`/api/memories?id=${this.memoryId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      }).then(async (response) => {
+        const result = await response.json();
+        
+        if (response.ok) {
+          setTimeout(() => {
+            window.location.href = '/memories';
+          }, 1500);
+          return result;
+        } else {
+          throw new Error(result.error || 'Failed to update memory');
+        }
+      });
+
+      (window as any).toast?.promise(updatePromise, {
+        loading: 'Updating your memory...',
+        success: 'Memory updated successfully! Redirecting...',
+        error: 'Failed to update memory. Please try again.'
+      });
+    }
+  }
+
+  // Initialize form when DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new EditMemoryForm();
+    });
+  } else {
+    new EditMemoryForm();
+  }
+</script>
+</Layout>

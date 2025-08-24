@@ -1,0 +1,129 @@
+---
+// Dynamic age counter component
+interface Props {
+  birthDate: string; // Format: "YYYY-MM-DD"
+  name?: string;
+}
+
+const { birthDate, name = "I" } = Astro.props;
+---
+
+<div class="age-counter text-center py-20">
+  <h2
+    class="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
+  >
+    {name} am
+  </h2>
+  <div class="relative">
+    <span
+      id="age-display"
+      class="text-6xl md:text-8xl font-bold font-handwriting text-purple-700"
+      data-birth-date={birthDate}
+    >
+      Loading...
+    </span>
+    <div class="text-lg md:text-xl text-gray-600 mt-4">
+      <span id="days-display">...</span> days of adventures
+    </div>
+  </div>
+
+  <!-- Milestone indicators -->
+  <div class="flex justify-center gap-4 mt-8 flex-wrap">
+    <div class="milestone-badge" data-age="0">
+      <span class="text-2xl">👶</span>
+      <span class="text-sm">Born</span>
+    </div>
+    <div class="milestone-badge" data-age="5">
+      <span class="text-2xl">🎒</span>
+      <span class="text-sm">School</span>
+    </div>
+    <div class="milestone-badge" data-age="18">
+      <span class="text-2xl">🎓</span>
+      <span class="text-sm">Adult</span>
+    </div>
+    <div class="milestone-badge" data-age="25">
+      <span class="text-2xl">💼</span>
+      <span class="text-sm">Career</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .milestone-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgb(196 181 253);
+    transition: all 0.3s ease;
+  }
+
+  .milestone-badge.achieved {
+    background-color: rgb(237 233 254);
+    border-color: rgb(168 85 247);
+    transform: scale(1.1);
+  }
+
+  .milestone-badge.current {
+    background: linear-gradient(
+      to bottom right,
+      rgb(168 85 247),
+      rgb(236 72 153)
+    );
+    color: white;
+    transform: scale(1.25);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+<script>
+  function updateAge() {
+    const ageDisplay = document.getElementById("age-display");
+    const daysDisplay = document.getElementById("days-display");
+    const birthDateStr = ageDisplay?.getAttribute("data-birth-date");
+
+    if (!birthDateStr || !ageDisplay || !daysDisplay) return;
+
+    const birthDate = new Date(birthDateStr);
+    const now = new Date();
+
+    // Calculate age
+    let age = now.getFullYear() - birthDate.getFullYear();
+    const monthDiff = now.getMonth() - birthDate.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && now.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    // Calculate days
+    const diffTime = Math.abs(now.getTime() - birthDate.getTime());
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    // Update displays with animation
+    ageDisplay.textContent = age.toString();
+    daysDisplay.textContent = diffDays.toLocaleString();
+
+    // Update milestone badges
+    const badges = document.querySelectorAll(".milestone-badge");
+    badges.forEach((badge) => {
+      const milestoneAge = parseInt(badge.getAttribute("data-age") || "0");
+      badge.classList.remove("achieved", "current");
+
+      if (age > milestoneAge) {
+        badge.classList.add("achieved");
+      } else if (age === milestoneAge) {
+        badge.classList.add("current");
+      }
+    });
+  }
+
+  // Update immediately and then every minute
+  updateAge();
+  setInterval(updateAge, 60000);
+</script>

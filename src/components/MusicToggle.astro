@@ -1,0 +1,113 @@
+---
+// Music toggle component for ambient sound
+---
+
+<div class="fixed top-6 right-6 z-50">
+  <button 
+    id="music-toggle"
+    class="music-btn bg-white/80 backdrop-blur-sm border border-purple-200 rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+    aria-label="Toggle ambient music"
+  >
+    <svg id="music-icon" class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+    </svg>
+    <svg id="mute-icon" class="w-6 h-6 text-gray-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd"></path>
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>
+    </svg>
+  </button>
+  
+  <!-- Hidden audio element for ambient sound -->
+  <audio id="ambient-audio" loop preload="none">
+    <!-- You can add your ambient sound file here -->
+    <!-- <source src="/ambient-sound.mp3" type="audio/mpeg"> -->
+  </audio>
+</div>
+
+<style>
+  .music-btn:hover {
+    background-color: rgb(250 245 255);
+    border-color: rgb(196 181 253);
+  }
+  
+  .music-btn.playing {
+    background-color: rgb(237 233 254);
+    border-color: rgb(168 85 247);
+  }
+  
+  .music-btn.playing #music-icon {
+    color: rgb(109 40 217);
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+</style>
+
+<script>
+  const musicToggle = document.getElementById('music-toggle');
+  const musicIcon = document.getElementById('music-icon');
+  const muteIcon = document.getElementById('mute-icon');
+  const ambientAudio = document.getElementById('ambient-audio') as HTMLAudioElement;
+  
+  let isPlaying = false;
+  
+  musicToggle?.addEventListener('click', () => {
+    if (!ambientAudio.src) {
+      // If no audio source is set, just toggle the visual state
+      // You can replace this with actual audio functionality
+      toggleVisualState();
+      return;
+    }
+    
+    if (isPlaying) {
+      ambientAudio.pause();
+      isPlaying = false;
+    } else {
+      ambientAudio.play().catch(e => {
+        console.log('Audio play failed:', e);
+        // Fallback to visual-only toggle
+        toggleVisualState();
+        return;
+      });
+      isPlaying = true;
+    }
+    
+    updateUI();
+  });
+  
+  function toggleVisualState() {
+    isPlaying = !isPlaying;
+    updateUI();
+  }
+  
+  function updateUI() {
+    if (isPlaying) {
+      musicToggle?.classList.add('playing');
+      musicIcon?.classList.add('hidden');
+      muteIcon?.classList.remove('hidden');
+    } else {
+      musicToggle?.classList.remove('playing');
+      musicIcon?.classList.remove('hidden');
+      muteIcon?.classList.add('hidden');
+    }
+  }
+  
+  // Handle audio events
+  ambientAudio?.addEventListener('ended', () => {
+    isPlaying = false;
+    updateUI();
+  });
+  
+  ambientAudio?.addEventListener('pause', () => {
+    isPlaying = false;
+    updateUI();
+  });
+  
+  ambientAudio?.addEventListener('play', () => {
+    isPlaying = true;
+    updateUI();
+  });
+</script>

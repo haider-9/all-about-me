@@ -1,0 +1,468 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+---
+
+<Layout title="Admin Dashboard - All About Me">
+    <Navbar />
+
+    <main class="pt-20 min-h-screen bg-natural-gradient">
+        <div class="container mx-auto px-4 py-8">
+            <!-- Page Header -->
+            <div class="text-center mb-8">
+                <h1
+                    class="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-700 to-slate-700 bg-clip-text text-transparent"
+                >
+                    Admin Dashboard
+                </h1>
+                <p class="text-gray-600 text-lg">
+                    Manage your All About Me application
+                </p>
+            </div>
+
+            <!-- ID Migration Status Card -->
+            <div class="glass rounded-2xl p-6 mb-8 shadow-natural-lg">
+                <h2
+                    class="text-2xl font-bold text-gray-800 mb-4 flex items-center"
+                >
+                    <svg
+                        class="w-6 h-6 mr-2 text-blue-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        ></path>
+                    </svg>
+                    Database ID Status
+                </h2>
+
+                <div id="id-status-loading" class="text-center py-4">
+                    <div
+                        class="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-2"
+                    >
+                    </div>
+                    <p class="text-gray-600">Checking ID status...</p>
+                </div>
+
+                <div id="id-status-content" class="hidden">
+                    <!-- Users Status -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">
+                            Users
+                        </h3>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-gray-600">Total Users:</span>
+                                <span id="total-users" class="font-semibold"
+                                    >-</span
+                                >
+                            </div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-gray-600"
+                                    >With Custom IDs:</span
+                                >
+                                <span id="users-with-ids" class="font-semibold"
+                                    >-</span
+                                >
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Status:</span>
+                                <span id="users-status" class="font-semibold"
+                                    >-</span
+                                >
+                            </div>
+                            <div
+                                id="sample-user"
+                                class="mt-2 text-sm text-gray-500 hidden"
+                            >
+                                Sample ID: <code
+                                    class="bg-gray-200 px-2 py-1 rounded"
+                                ></code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Memories Status -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-2">
+                            Memories
+                        </h3>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-gray-600"
+                                    >Total Memories:</span
+                                >
+                                <span id="total-memories" class="font-semibold"
+                                    >-</span
+                                >
+                            </div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-gray-600"
+                                    >With Custom IDs:</span
+                                >
+                                <span
+                                    id="memories-with-ids"
+                                    class="font-semibold">-</span
+                                >
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Status:</span>
+                                <span id="memories-status" class="font-semibold"
+                                    >-</span
+                                >
+                            </div>
+                            <div
+                                id="sample-memory"
+                                class="mt-2 text-sm text-gray-500 hidden"
+                            >
+                                Sample ID: <code
+                                    class="bg-gray-200 px-2 py-1 rounded"
+                                ></code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Overall Status -->
+                    <div
+                        id="migration-needed"
+                        class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4 hidden"
+                    >
+                        <div class="flex items-center">
+                            <svg
+                                class="w-5 h-5 text-yellow-600 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                                ></path>
+                            </svg>
+                            <span class="text-yellow-800 font-semibold"
+                                >Migration Required</span
+                            >
+                        </div>
+                        <p class="text-yellow-700 mt-2">
+                            Some records still use MongoDB ObjectIds and need to
+                            be migrated to custom IDs.
+                        </p>
+                    </div>
+
+                    <div
+                        id="migration-complete"
+                        class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4 hidden"
+                    >
+                        <div class="flex items-center">
+                            <svg
+                                class="w-5 h-5 text-green-600 mr-2"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-green-800 font-semibold"
+                                >Migration Complete</span
+                            >
+                        </div>
+                        <p class="text-green-700 mt-2">
+                            All records are using custom IDs. No migration
+                            needed!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Migration Card -->
+                <div class="glass rounded-2xl p-6 shadow-natural">
+                    <div class="text-center">
+                        <div
+                            class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                        >
+                            <svg
+                                class="w-6 h-6 text-blue-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                ></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                            Database Migration
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Convert MongoDB ObjectIds to custom readable IDs
+                        </p>
+                        <a
+                            href="/admin/migrate"
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors"
+                        >
+                            Run Migration
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Refresh Status Card -->
+                <div class="glass rounded-2xl p-6 shadow-natural">
+                    <div class="text-center">
+                        <div
+                            class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                        >
+                            <svg
+                                class="w-6 h-6 text-green-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                ></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                            Refresh Status
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Check current database ID status
+                        </p>
+                        <button
+                            id="refresh-status"
+                            class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 transition-colors"
+                        >
+                            Refresh Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Back to Dashboard Card -->
+                <div class="glass rounded-2xl p-6 shadow-natural">
+                    <div class="text-center">
+                        <div
+                            class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                        >
+                            <svg
+                                class="w-6 h-6 text-slate-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"
+                                ></path>
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"
+                                ></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">
+                            User Dashboard
+                        </h3>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Return to the main application
+                        </p>
+                        <a
+                            href="/dashboard"
+                            class="bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-slate-700 transition-colors"
+                        >
+                            Go to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ID Format Examples -->
+            <div class="glass rounded-2xl p-6 mt-8 shadow-natural">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">
+                    Custom ID Format Examples
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <h3 class="font-semibold text-blue-800 mb-2">
+                            User IDs
+                        </h3>
+                        <code class="text-blue-600 text-sm">user_k7x9m2p4</code>
+                        <p class="text-blue-700 text-xs mt-1">
+                            Clean, readable user identifiers
+                        </p>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <h3 class="font-semibold text-green-800 mb-2">
+                            Memory IDs
+                        </h3>
+                        <code class="text-green-600 text-sm">mem_a5b8c3d1</code>
+                        <p class="text-green-700 text-xs mt-1">
+                            Easy to identify memory records
+                        </p>
+                    </div>
+                    <div class="bg-purple-50 rounded-lg p-4">
+                        <h3 class="font-semibold text-purple-800 mb-2">
+                            Session IDs
+                        </h3>
+                        <code class="text-purple-600 text-sm"
+                            >sess_x9m2k7p4q8w1</code
+                        >
+                        <p class="text-purple-700 text-xs mt-1">
+                            Secure session identifiers
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</Layout>
+
+<script>
+    class AdminDashboard {
+        constructor() {
+            this.loadIdStatus();
+            this.setupEventListeners();
+        }
+
+        setupEventListeners() {
+            const refreshBtn = document.getElementById("refresh-status");
+            refreshBtn?.addEventListener("click", () => {
+                this.loadIdStatus();
+            });
+        }
+
+        async loadIdStatus() {
+            const loadingDiv = document.getElementById("id-status-loading");
+            const contentDiv = document.getElementById("id-status-content");
+
+            loadingDiv?.classList.remove("hidden");
+            contentDiv?.classList.add("hidden");
+
+            try {
+                const response = await fetch("/api/id-status");
+                const data = await response.json();
+
+                if (response.ok) {
+                    this.displayIdStatus(data);
+                } else {
+                    this.showError("Failed to load ID status");
+                }
+            } catch (error) {
+                console.error("Error loading ID status:", error);
+                this.showError("Network error while loading status");
+            } finally {
+                loadingDiv?.classList.add("hidden");
+                contentDiv?.classList.remove("hidden");
+            }
+        }
+
+        displayIdStatus(data: any) {
+            // Update users info
+            document.getElementById("total-users")!.textContent =
+                data.users.total.toString();
+            document.getElementById("users-with-ids")!.textContent =
+                data.users.withCustomIds.toString();
+
+            const usersStatus = document.getElementById("users-status")!;
+            if (data.users.migrationComplete) {
+                usersStatus.textContent = "✅ Complete";
+                usersStatus.className = "font-semibold text-green-600";
+            } else {
+                usersStatus.textContent = "⚠️ Needs Migration";
+                usersStatus.className = "font-semibold text-yellow-600";
+            }
+
+            // Show sample user ID if available
+            if (data.users.sampleId) {
+                const sampleUser = document.getElementById("sample-user")!;
+                sampleUser.querySelector("code")!.textContent =
+                    data.users.sampleId;
+                sampleUser.classList.remove("hidden");
+            }
+
+            // Update memories info
+            document.getElementById("total-memories")!.textContent =
+                data.memories.total.toString();
+            document.getElementById("memories-with-ids")!.textContent =
+                data.memories.withCustomIds.toString();
+
+            const memoriesStatus = document.getElementById("memories-status")!;
+            if (data.memories.migrationComplete) {
+                memoriesStatus.textContent = "✅ Complete";
+                memoriesStatus.className = "font-semibold text-green-600";
+            } else {
+                memoriesStatus.textContent = "⚠️ Needs Migration";
+                memoriesStatus.className = "font-semibold text-yellow-600";
+            }
+
+            // Show sample memory ID if available
+            if (data.memories.sampleId) {
+                const sampleMemory = document.getElementById("sample-memory")!;
+                sampleMemory.querySelector("code")!.textContent =
+                    data.memories.sampleId;
+                sampleMemory.classList.remove("hidden");
+            }
+
+            // Show overall status
+            const migrationNeeded =
+                document.getElementById("migration-needed")!;
+            const migrationComplete =
+                document.getElementById("migration-complete")!;
+
+            if (data.overallStatus.allMigrated) {
+                migrationComplete.classList.remove("hidden");
+                migrationNeeded.classList.add("hidden");
+            } else {
+                migrationNeeded.classList.remove("hidden");
+                migrationComplete.classList.add("hidden");
+            }
+        }
+
+        showError(message: any) {
+            const contentDiv = document.getElementById("id-status-content")!;
+            contentDiv.innerHTML = `
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div class="flex items-center">
+            <svg class="w-5 h-5 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="text-red-800 font-semibold">Error</span>
+          </div>
+          <p class="text-red-700 mt-2">${message}</p>
+        </div>
+      `;
+        }
+    }
+
+    // Initialize admin dashboard
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+            new AdminDashboard();
+        });
+    } else {
+        new AdminDashboard();
+    }
+</script>
